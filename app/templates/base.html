@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>{% block title %}成研院-技支-AI测评能力平台{% endblock %}</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+    {% block styles %}{% endblock %}
+
+    <style>
+      html {
+        min-height: 100vh; /* Ensure html takes full viewport height */
+      }
+      body {
+        background-image: url("{{ url_for('static', filename='images/1234.jpg') }}");
+        color: white; /* Added to make text white */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center center;
+        min-height: 100vh; /* Ensure body takes at least full viewport height */
+        margin: 0; /* Remove default body margin */
+        padding-top: 56px; /* Adjust based on navbar height */
+      }
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      .content-container {
+        padding-top: 20px; /* Add padding to prevent content from being hidden behind the navbar */
+      }
+
+      /* Styles from function1.html for consistency */
+      :root {
+            --primary-color: #0071e3;
+            --secondary-color: #86868b;
+            --text-color: white;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --success-color: #5cb85c;
+      }
+
+      .form-label {
+        color: white !important;
+      }
+
+      .form-control {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+      }
+
+      .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7) !important;
+      }
+      
+      .form-control:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2) !important;
+            background-color: rgba(255, 255, 255, 0.2) !important; /* Slightly more opaque on focus */
+      }
+
+      /* Styles for cards to make them transparent and text visible */
+      .card {
+        background-color: rgba(0, 0, 0, 0.5); /* Darker semi-transparent background for cards */
+        border: 1px solid var(--border-color);
+        color: white; /* Ensure text inside card is white */
+      }
+
+      .card-header {
+        background-color: rgba(0, 0, 0, 0.6); /* Slightly darker or distinct from card body */
+        border-bottom: 1px solid var(--border-color);
+        color: white;
+      }
+
+      .card-body {
+        /* color: white; is inherited from .card, specific styling if needed */
+      }
+
+      .card a {
+        color: #87CEFA; /* LightSkyBlue, good contrast on dark transparent backgrounds */
+      }
+      .card a:hover {
+        color: #ADD8E6; /* LightBlue, slightly different for hover */
+      }
+
+      .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+      }
+      
+      .btn-primary:hover {
+            background-color: #0062c3; /* Darker shade of primary color */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .btn-success {
+            background-color: var(--success-color);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+      }
+      
+      .btn-success:hover {
+            background-color: #4cae4c; /* Darker shade of success color */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">成研院-技支-AI测评能力平台</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" aria-current="page" href="{{ url_for('main.index') }}">首页</a>
+          </li>
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.function1' %}active{% endif %}" href="{{ url_for('main.function1') }}">生成式文本准确性指标测评工具</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.function3' %}active{% endif %}" href="{{ url_for('main.function3') }}">文本内容随机抽取工具</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.function4' %}active{% endif %}" href="{{ url_for('main.function4') }}">AI评AI工具</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.admin_user_activity' %}active{% endif %}" href="{{ url_for('main.admin_user_activity') }}">用户活动日志</a>
+          </li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="navbar-text">你好, {{ current_user.username }}!</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">退出登录</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'auth.login' %}active{% endif %}" href="{{ url_for('auth.login') }}">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'auth.register' %}active{% endif %}" href="{{ url_for('auth.register') }}">注册</a>
+                </li>
+            {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="content-container container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% block page_content %}{% endblock %}
+</main>
+
+<footer class="container mt-auto py-3 bg-dark text-white text-center">
+    <p>&copy; 2024 成研院-技支. 保留所有权利.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

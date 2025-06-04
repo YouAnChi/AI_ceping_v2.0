@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>生成式文本准确性指标测评工具 - 成研院-技支-AI测评能力平台</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --secondary-color: #86868b;
+            --background-color: #fbfbfd;
+            --text-color: white; /* Changed to white */
+            --border-color: rgba(255, 255, 255, 0.2); /* Adjusted for transparency */
+            --success-color: #5cb85c;
+        }
+        
+        html {
+            min-height: 100vh; /* Ensure html takes full viewport height */
+        }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* background-color: var(--background-color); */ /* Commented out or removed to let image show */
+            color: white; /* Changed to white */
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            background-image: url("{{ url_for('static', filename='images/1234.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            min-height: 100vh; /* Ensure body takes at least full viewport height */
+            margin: 0; /* Remove default body margin */
+        }
+        
+        /* 保留自定义样式，但移除与导航栏相关的样式，使用index.html的样式 */
+        
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+        
+        /* 移除自定义导航栏样式，使用Bootstrap默认样式 */
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: white; /* Changed to white */
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: white; /* Changed to white */
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+            color: white; /* Text color for input */
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Lighter placeholder text */
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+        }
+        
+        .form-check-input {
+            width: 1.1rem;
+            height: 1.1rem;
+            margin-top: 0.25rem;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .form-check-label {
+            font-size: 0.95rem;
+            padding-left: 0.25rem;
+            color: white; /* Changed to white */
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0062c3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #4cae4c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert {
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-top: 2rem;
+            border: none;
+        }
+        
+        .alert-success {
+            background-color: rgba(92, 184, 92, 0.1);
+            color: #2d6a2d;
+        }
+        
+        .alert-danger {
+            background-color: rgba(217, 83, 79, 0.1);
+            color: #a94442;
+        }
+        
+        .alert-link {
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .section-container {
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        footer {
+            padding: 3rem 0;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .page-header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+        
+        .page-description {
+            font-size: 1.2rem;
+            color: white; /* Changed to white */
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 500px; /* Limit width */
+            margin-left: auto; /* Center */
+            margin-right: auto; /* Center */
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 3px; /* Small padding to see the border effect */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* For positioning text */
+        }
+
+        .progress-bar-custom {
+            width: 0%;
+            height: 20px;
+            background-color: var(--primary-color); /* Use existing primary color */
+            border-radius: 6px;
+            transition: width 0.3s ease-in-out, background-color 0.3s ease; /* Added background-color transition */
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Add subtle shadow for better readability */
+        }
+    </style>
+</head>
+<body>
+    
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">成研院-技支-AI测评能力平台</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.index') }}">首页</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('main.function1') }}">生成式文本准确性指标测评工具</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.function3') }}">文本内容随机抽取工具</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.function4') }}">AI评AI工具</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+    <div class="container mt-5 pt-5">
+        <div class="page-header animate-fade-in">
+            <h1>生成式文本准确性指标测评工具</h1>
+            <p class="page-description">上传您的Excel文件，配置模型参数，选择评估指标，我们将为您提供全面的模型评估结果。</p>
+        </div>
+        
+        <div class="animate-fade-in" style="animation-delay: 0.1s;">
+            <form id="excelUploadForm" method="POST" action="{{ url_for('main.function1') }}" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="excelFile" class="form-label">1. 上传 Excel 文件</label>
+                    <input class="form-control" type="file" id="excelFile" name="excelFile" accept=".xls,.xlsx" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="questionColumn" class="form-label">2. 指定问题列</label>
+                    <input type="text" class="form-control" id="questionColumn" name="questionColumn" placeholder="例如: A" value="A" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="prompt" class="form-label">提示词 (可选)</label>
+                    <textarea class="form-control" id="prompt" name="prompt" rows="3" placeholder="例如：你是一个英文翻译机器人，请用英文翻译提供的内容，除此之外不要输出任何其他内容。"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <h2>3. 配置外部模型参数</h2>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="external_model_key" class="form-label">API Key</label>
+                            <input type="text" class="form-control" id="external_model_key" name="external_model_key" placeholder="例如: sk-xxxxxxxx">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="external_model_url" class="form-label">API URL</label>
+                            <input type="text" class="form-control" id="external_model_url" name="external_model_url" placeholder="例如: https://api.example.com/v1/">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="external_model_name" class="form-label">模型名称</label>
+                            <select class="form-select form-control" id="external_model_name" name="external_model_name">
+                                <option value="deepseek-ai/DeepSeek-V2.5">deepseek-ai/DeepSeek-V2.5</option>
+                                <option value="Qwen/Qwen3-30B-A3B">Qwen/Qwen3-30B-A3B</option>
+                                <option value="THUDM/GLM-4-32B-0414">THUDM/GLM-4-32B-0414</option>
+                                <option value="internlm/internlm2_5-20b-chat">internlm/internlm2_5-20b-chat</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 align-self-end">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="external_model_get_first_token" name="external_model_get_first_token" value="true">
+                                <label class="form-check-label" for="external_model_get_first_token">
+                                    获取首Token响应时间
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-light me-2" onclick="testModelConnection('external')">测试连通性</button>
+                            <span id="external_model_status" class="ms-2"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h2>4. 配置内部模型参数</h2>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="internal_model_key" class="form-label">API Key</label>
+                            <input type="text" class="form-control" id="internal_model_key" name="internal_model_key" placeholder="例如: sk-yyyyyyyy">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="internal_model_url" class="form-label">API URL</label>
+                            <input type="text" class="form-control" id="internal_model_url" name="internal_model_url" placeholder="例如: https://internal.api/v1/">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="internal_model_name" class="form-label">模型名称</label>
+                            <select class="form-select form-control" id="internal_model_name" name="internal_model_name">
+                                <option value="deepseek-ai/DeepSeek-V2.5">deepseek-ai/DeepSeek-V2.5</option>
+                                <option value="Qwen/Qwen3-30B-A3B">Qwen/Qwen3-30B-A3B</option>
+                                <option value="THUDM/GLM-4-32B-0414">THUDM/GLM-4-32B-0414</option>
+                                <option value="internlm/internlm2_5-20b-chat">internlm/internlm2_5-20b-chat</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 align-self-end">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="internal_model_get_first_token" name="internal_model_get_first_token" value="true">
+                                <label class="form-check-label" for="internal_model_get_first_token">
+                                    获取首Token响应时间
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-light me-2" onclick="testModelConnection('internal')">测试连通性</button>
+                            <span id="internal_model_status" class="ms-2"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h2>5. 选择评估指标</h2>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ass" id="metricASS" name="metrics">
+                                <label class="form-check-label" for="metricASS">
+                                    ASS (Answer Semantic Similarity)
+                                </label>
+                            </div>
+                            <!-- Dropdown for ASS embedding model selection -->
+                            <div class="mt-2" id="assEmbeddingModelGroup" style="display: none;">
+                                <label for="embeddingModelForASS" class="form-label">ASS评估嵌入文本向量化模型选择:</label>
+                                <select class="form-select form-select-sm" id="embeddingModelForASS" name="embedding_model_for_ass">
+                                    {% if embedding_models %}
+                                        {% for model_name in embedding_models %}
+                                            <option value="{{ model_name }}" {% if model_name == 'BAAI/bge-small-zh-v1.5' %}selected{% endif %}>{{ model_name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="BAAI/bge-small-zh-v1.5" selected>BAAI/bge-small-zh-v1.5 (默认)</option>
+                                        <option value="paraphrase-multilingual-MiniLM-L12-v2">paraphrase-multilingual-MiniLM-L12-v2 (备用)</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="rouge1" id="metricRouge1" name="metrics">
+                                <label class="form-check-label" for="metricRouge1">
+                                    ROUGE-1
+                                </label>
+                            </div>
+                            <!-- Dropdown for ASS embedding model selection -->
+                            <div class="mt-2" id="assEmbeddingModelGroup" style="display: none;">
+                                <label for="embeddingModelForASS" class="form-label">ASS评估嵌入文本向量化模型选择:</label>
+                                <select class="form-select form-select-sm" id="embeddingModelForASS" name="embedding_model_for_ass">
+                                    {% if embedding_models %}
+                                        {% for model_name in embedding_models %}
+                                            <option value="{{ model_name }}" {% if model_name == 'BAAI/bge-small-zh-v1.5' %}selected{% endif %}>{{ model_name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="BAAI/bge-small-zh-v1.5" selected>BAAI/bge-small-zh-v1.5 (默认)</option>
+                                        <option value="paraphrase-multilingual-MiniLM-L12-v2">paraphrase-multilingual-MiniLM-L12-v2 (备用)</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="rouge2" id="metricRouge2" name="metrics">
+                                <label class="form-check-label" for="metricRouge2">
+                                    ROUGE-2
+                                </label>
+                            </div>
+                            <!-- Dropdown for ASS embedding model selection -->
+                            <div class="mt-2" id="assEmbeddingModelGroup" style="display: none;">
+                                <label for="embeddingModelForASS" class="form-label">ASS评估嵌入文本向量化模型选择:</label>
+                                <select class="form-select form-select-sm" id="embeddingModelForASS" name="embedding_model_for_ass">
+                                    {% if embedding_models %}
+                                        {% for model_name in embedding_models %}
+                                            <option value="{{ model_name }}" {% if model_name == 'BAAI/bge-small-zh-v1.5' %}selected{% endif %}>{{ model_name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="BAAI/bge-small-zh-v1.5" selected>BAAI/bge-small-zh-v1.5 (默认)</option>
+                                        <option value="paraphrase-multilingual-MiniLM-L12-v2">paraphrase-multilingual-MiniLM-L12-v2 (备用)</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="rougel" id="metricRougeL" name="metrics">
+                                <label class="form-check-label" for="metricRougeL">
+                                    ROUGE-L
+                                </label>
+                            </div>
+                            <!-- Dropdown for ASS embedding model selection -->
+                            <div class="mt-2" id="assEmbeddingModelGroup" style="display: none;">
+                                <label for="embeddingModelForASS" class="form-label">ASS评估嵌入文本向量化模型选择:</label>
+                                <select class="form-select form-select-sm" id="embeddingModelForASS" name="embedding_model_for_ass">
+                                    {% if embedding_models %}
+                                        {% for model_name in embedding_models %}
+                                            <option value="{{ model_name }}" {% if model_name == 'BAAI/bge-small-zh-v1.5' %}selected{% endif %}>{{ model_name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="BAAI/bge-small-zh-v1.5" selected>BAAI/bge-small-zh-v1.5 (默认)</option>
+                                        <option value="paraphrase-multilingual-MiniLM-L12-v2">paraphrase-multilingual-MiniLM-L12-v2 (备用)</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="f1_chinese" id="metricF1Chinese" name="metrics">
+                                <label class="form-check-label" for="metricF1Chinese">
+                                    F1值 (中文分词)
+                                </label>
+                            </div>
+                            <!-- Dropdown for ASS embedding model selection -->
+                            <div class="mt-2" id="assEmbeddingModelGroup" style="display: none;">
+                                <label for="embeddingModelForASS" class="form-label">ASS评估嵌入文本向量化模型选择:</label>
+                                <select class="form-select form-select-sm" id="embeddingModelForASS" name="embedding_model_for_ass">
+                                    {% if embedding_models %}
+                                        {% for model_name in embedding_models %}
+                                            <option value="{{ model_name }}" {% if model_name == 'BAAI/bge-small-zh-v1.5' %}selected{% endif %}>{{ model_name }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <option value="BAAI/bge-small-zh-v1.5" selected>BAAI/bge-small-zh-v1.5 (默认)</option>
+                                        <option value="paraphrase-multilingual-MiniLM-L12-v2">paraphrase-multilingual-MiniLM-L12-v2 (备用)</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="f1_cilin" id="metricF1Cilin" name="metrics">
+                                <label class="form-check-label" for="metricF1Cilin">
+                                    F1值 (中文分词使用哈工大词林版)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="progressBarContainer" class="progress-container" style="display: none;">
+                    <div id="progressBar" class="progress-bar-custom"></div>
+                    <div id="progressText" class="progress-text">0%</div>
+                </div>
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-primary">开始处理</button>
+                </div>
+            </form>
+        </div>
+
+        {% if error_message %}
+            <div class="alert alert-danger mt-4 animate-fade-in" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        {% if processed_filename %}
+            <div class="alert alert-success mt-4 animate-fade-in" role="alert">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="alert-heading mb-2">处理成功！</h4>
+                        <p class="mb-0">您的Excel文件已成功处理完毕，可以下载查看结果。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="resultArea" class="mt-4 text-center animate-fade-in" data-ajax-generated="true">
+                <h2>评估结果</h2>
+                <p class="mb-4">处理完成！点击下方按钮下载生成的Excel文件。</p>
+                <a href="{{ url_for('main.download_file', filename='${filename}') }}" id="downloadLink" class="btn btn-success">下载 Excel 文件</a>
+            </div>
+        {% endif %}
+    </div>
+<!-- FOOTER -->
+</main>
+
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+    <script>
+        async function testModelConnection(modelType) {
+            const apiKey = document.getElementById(`${modelType}_model_key`).value;
+            const apiUrl = document.getElementById(`${modelType}_model_url`).value;
+            const modelName = document.getElementById(`${modelType}_model_name`).value;
+            const statusElement = document.getElementById(`${modelType}_model_status`);
+
+            statusElement.textContent = '正在测试...';
+            statusElement.className = 'ms-2 text-info'; // Reset class
+
+            if (!apiUrl) {
+                statusElement.textContent = 'API URL 不能为空';
+                statusElement.classList.add('text-danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('{{ url_for("main.test_ai_model_connection") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        api_key: apiKey, 
+                        api_url: apiUrl, 
+                        model_name: modelName,
+                        model_type: modelType // To differentiate if backend logic needs it
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) { // Check result.success (boolean) instead of result.status === 'success'
+                    statusElement.textContent = '连接成功，模型可用。';
+                    statusElement.className = 'ms-2 text-success'; // Ensure only success class is applied
+                } else {
+                    let failMsg = '连接失败';
+                    // Use result.message from the backend for failure details
+                    if (result.message && result.message.trim() !== '') {
+                        failMsg += ': ' + result.message;
+                    }
+                    statusElement.textContent = failMsg;
+                    statusElement.className = 'ms-2 text-danger'; // Ensure only danger class is applied
+                }
+            } catch (error) {
+                console.error('Error testing connection:', error);
+                statusElement.textContent = '测试请求失败: ' + error.message;
+                statusElement.classList.add('text-danger');
+            }
+        }
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('excelUploadForm');
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const submitButton = form.querySelector('button[type="submit"]');
+    let taskId = null;
+    let pollingInterval = null;
+
+    const metricASSCheckbox = document.getElementById('metricASS');
+    const assEmbeddingModelGroup = document.getElementById('assEmbeddingModelGroup');
+
+    if (metricASSCheckbox && assEmbeddingModelGroup) {
+        function toggleAssModelDropdown() {
+            if (metricASSCheckbox.checked) {
+                assEmbeddingModelGroup.style.display = 'block';
+            } else {
+                assEmbeddingModelGroup.style.display = 'none';
+            }
+        }
+
+        // Initial check
+        toggleAssModelDropdown();
+
+        // Listen for changes on the ASS checkbox
+        metricASSCheckbox.addEventListener('change', toggleAssModelDropdown);
+    }
+
+    function clearPreviousResults() {
+        const existingAlerts = document.querySelectorAll('.alert.mt-4.animate-fade-in');
+        existingAlerts.forEach(alert => alert.remove());
+        const existingResultArea = document.getElementById('resultArea');
+        if (existingResultArea) existingResultArea.remove();
+        // Clear Jinja flashed messages if they exist and we are about to start AJAX
+        const jinjaError = document.querySelector('div.alert.alert-danger[role="alert"]:not([data-ajax-generated])');
+        if (jinjaError) jinjaError.remove();
+        const jinjaSuccess = document.querySelector('div.alert.alert-success[role="alert"]:not([data-ajax-generated])');
+        if (jinjaSuccess) jinjaSuccess.remove();
+        const jinjaResultArea = document.querySelector('#resultArea:not([data-ajax-generated])');
+        if (jinjaResultArea) jinjaResultArea.remove();
+    }
+
+    if (form && progressBarContainer && progressBar && progressText && submitButton) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            clearPreviousResults();
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.style.backgroundColor = 'var(--primary-color)';
+            progressText.textContent = '0%';
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.7';
+
+            const formData = new FormData(form);
+
+            fetch("{{ url_for('main.function1') }}", {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Check content type before attempting to parse as JSON
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.indexOf('application/json') !== -1) {
+                        return response.json().then(errData => {
+                            throw new Error(errData.message || `服务器错误: ${response.status}`);
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(`服务器返回了非预期的内容 (状态码: ${response.status}): ${text.substring(0, 200)}...`); // Show first 200 chars of non-JSON response
+                        });
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'processing' && data.task_id) {
+                    taskId = data.task_id;
+                    startPolling();
+                } else if (data.status === 'error') {
+                    showError(data.message || '提交失败，请重试。');
+                } else {
+                    showError('服务器响应格式不正确。');
+                }
+            })
+            .catch(error => {
+                showError(error.message || '提交请求失败，请检查网络连接或稍后重试。');
+                console.error('Error submitting form:', error);
+            });
+        });
+    }
+
+    function startPolling() {
+        if (pollingInterval) clearInterval(pollingInterval);
+
+        pollingInterval = setInterval(() => {
+            if (!taskId) {
+                clearInterval(pollingInterval);
+                return;
+            }
+            fetch(`/get_progress/${taskId}`)
+            .then(response => {
+                 if (!response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.indexOf('application/json') !== -1) {
+                        return response.json().then(errData => {
+                            throw new Error(errData.message || `获取进度失败: ${response.status}`);
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(`获取进度时服务器返回了非预期的内容 (状态码: ${response.status}): ${text.substring(0, 200)}...`);
+                        });
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'error') {
+                    clearInterval(pollingInterval);
+                    showError(data.message || '处理过程中发生错误。');
+                    return;
+                }
+
+                const progress = data.progress !== undefined ? data.progress : 0;
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+
+                if (data.status === 'completed') {
+                    clearInterval(pollingInterval);
+                    progressBar.style.width = '100%';
+                    progressText.textContent = '处理完成!';
+                    progressBar.style.backgroundColor = 'var(--success-color)';
+                    if (data.processed_filename) {
+                        showSuccess(data.processed_filename);
+                    }
+                    submitButton.disabled = false;
+                    submitButton.style.opacity = '1';
+                } else if (data.status === 'processing') {
+                    // Continue polling
+                } else if (data.status === 'failed') {
+                    clearInterval(pollingInterval);
+                    showError(data.message || '任务处理失败。');
+                    submitButton.disabled = false;
+                    submitButton.style.opacity = '1';
+                }
+            })
+            .catch(error => {
+                clearInterval(pollingInterval);
+                showError(error.message || '获取进度信息时发生网络错误，请刷新页面重试。');
+                console.error('Error polling progress:', error);
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+            });
+        }, 2000); 
+    }
+
+    function showError(message) {
+        clearPreviousResults(); 
+        progressBarContainer.style.display = 'none'; 
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+
+        const alertHtml = `
+            <div class="alert alert-danger mt-4 animate-fade-in" role="alert" data-ajax-generated="true">
+                ${message}
+            </div>
+        `;
+        const formElement = document.getElementById('excelUploadForm');
+        if (formElement) {
+            formElement.insertAdjacentHTML('afterend', alertHtml);
+        } else {
+            document.body.insertAdjacentHTML('beforeend', alertHtml);
+        }
+    }
+
+    function showSuccess(filename) {
+        clearPreviousResults();
+        progressBarContainer.style.display = 'block';
+        progressBar.style.width = '100%';
+        progressBar.style.backgroundColor = 'var(--success-color)';
+        progressText.textContent = '处理完成!';
+
+        // Correctly construct the download URL in JavaScript
+        const downloadUrl = `/download_file/${filename}`;
+
+        const successMessagesHtml = `
+            <div class="alert alert-success mt-4 animate-fade-in" role="alert" data-ajax-generated="true">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="alert-heading mb-2">处理成功！</h4>
+                        <p class="mb-0">您的Excel文件已成功处理完毕，可以下载查看结果。</p>
+                    </div>
+                </div>
+            </div>
+            <div id="resultArea" class="mt-4 text-center animate-fade-in" data-ajax-generated="true">
+                <h2>评估结果</h2>
+                <p class="mb-4">处理完成！点击下方按钮下载生成的Excel文件。</p>
+                <a href="${downloadUrl}" id="downloadLink" class="btn btn-success">下载 Excel 文件</a>
+            </div>
+        `;
+        const formElement = document.getElementById('excelUploadForm');
+        if (formElement) {
+            formElement.insertAdjacentHTML('afterend', successMessagesHtml);
+        } else {
+            document.body.insertAdjacentHTML('beforeend', successMessagesHtml);
+        }
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+    }
+
+    // Initial check for server-rendered messages (e.g., from non-AJAX POST or redirect with flash)
+    // These are typically rendered by Jinja. We don't want to immediately clear them if they exist on page load.
+    // The clearPreviousResults() function will be called before an AJAX submission starts.
+    const initialErrorElement = document.querySelector('div.alert.alert-danger[role="alert"]:not([data-ajax-generated])');
+    const initialSuccessElement = document.querySelector('div.alert.alert-success[role="alert"]:not([data-ajax-generated])');
+    const initialResultArea = document.getElementById('resultArea:not([data-ajax-generated])');
+
+    if (initialErrorElement || initialSuccessElement || initialResultArea) {
+        progressBarContainer.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+    }
+});
+</script>
+
+<footer class="container text-center mt-5" style="color: var(--secondary-color);">
+    <p>&copy; 2025 成研院-技支. 保留所有权利.</p>
+</footer>     
+  </body>
+</html>

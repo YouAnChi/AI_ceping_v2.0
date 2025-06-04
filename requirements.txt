@@ -1,0 +1,16 @@
+flask
+werkzeug
+pandas
+openai
+sentence-transformers
+numpy
+rouge
+jieba
+modelscope
+requests
+Flask-Login
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-WTF
+email-validator
+bootstrap-flask

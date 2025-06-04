@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>文本内容随机抽取工具 - 成研院-技支-AI测评能力平台</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --secondary-color: #86868b;
+            --background-color: #fbfbfd;
+            --text-color: white; 
+            --border-color: rgba(255, 255, 255, 0.2); 
+            --success-color: #5cb85c;
+        }
+        
+        html {
+            min-height: 100vh; 
+        }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: white; 
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            background-image: url("{{ url_for('static', filename='images/1234.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: white; 
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: white; 
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.1); 
+            color: white; 
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7); 
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+        }
+        
+        .form-select {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-select option {
+            background-color: #343a40; /* Dark background for options */
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0062c3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+        
+        .page-description {
+            font-size: 1.2rem;
+            color: white; 
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 500px; /* Limit width */
+            margin-left: auto; /* Center */
+            margin-right: auto; /* Center */
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 3px; /* Small padding to see the border effect */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* For positioning text */
+            display: none; /* Initially hidden */
+        }
+
+        .progress-bar-custom {
+            width: 0%;
+            height: 20px;
+            background-color: var(--primary-color); /* Use existing primary color */
+            border-radius: 6px;
+            transition: width 0.3s ease-in-out, background-color 0.3s ease; /* Added background-color transition */
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Add subtle shadow for better readability */
+        }
+    </style>
+</head>
+<body>
+    
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">成研院-技支-AI测评能力平台</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.index') }}">首页</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.function1') }}">生成式文本准确性指标测评工具</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('main.function3') }}">文本内容随机抽取工具</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.function4') }}">AI评AI工具</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+    <div class="container mt-5 pt-5">
+        <div class="page-header animate-fade-in">
+            <h1>文本内容随机抽取工具</h1>
+            <p class="page-description">上传您的文本文件或包含文本文件的文件夹，配置抽取参数，我们将为您随机抽取内容并保存到Excel文件。</p>
+        </div>
+        
+        <div class="animate-fade-in" style="animation-delay: 0.1s;">
+            <form id="extractionForm" method="POST" action="{{ url_for('main.function3') }}" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="fileUpload" class="form-label">1. 上传文件</label>
+                    <input class="form-control" type="file" id="fileUpload" name="fileUpload[]" multiple>
+                    <small class="form-text text-light">您可以选择一个或多个 .txt 文件。若要上传文件夹中的所有文件，请进入文件夹并全选。</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="split_by" class="form-label">2. 内容分割符</label>
+                    <input type="text" class="form-control" id="split_by" name="split_by" value="\n" placeholder="例如：\n">
+                    <small class="form-text text-light">指定文本内容按什么符号进行分割，默认为换行符。</small>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="extraction_type" class="form-label">3. 抽取方式</label>
+                        <select class="form-select" id="extraction_type" name="extraction_type">
+                            <option value="count" selected>按条数抽取</option>
+                            <option value="percentage">按百分比抽取</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="count_group">
+                            <label for="count" class="form-label">抽取条数</label>
+                            <input type="number" class="form-control" id="count" name="count" placeholder="例如: 10" min="1">
+                        </div>
+                        <div id="percentage_group" style="display: none;">
+                            <label for="percentage" class="form-label">抽取百分比 (%)</label>
+                            <input type="number" class="form-control" id="percentage" name="percentage" placeholder="例如: 10" min="1" max="100">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">开始抽取</button>
+            </form>
+
+            <div id="progressBarContainer" class="progress-container animate-fade-in" style="display: none;">
+                <div id="progressBar" class="progress-bar-custom"></div>
+                <span id="progressText" class="progress-text">0%</span>
+            </div>
+
+            <div id="resultArea" class="mt-4"></div>
+            <!-- download_links_container will be part of resultArea or managed by JS -->
+        </div>
+    </div>
+</main>
+
+<footer class="container text-center mt-5" style="color: var(--secondary-color);">
+    <p>&copy; 2025 成研院-技支. 保留所有权利.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const extractionTypeSelect = document.getElementById('extraction_type');
+    const extractionForm = document.getElementById('extractionForm');
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultArea = document.getElementById('resultArea'); // Changed from download_links_container
+    const submitButton = extractionForm ? extractionForm.querySelector('button[type="submit"]') : null;
+    let taskId = null;
+    let pollingInterval = null;
+
+    // Logic for extraction_type visibility
+    if (extractionTypeSelect) {
+        const countGroup = document.getElementById('count_group');
+        const percentageGroup = document.getElementById('percentage_group');
+        const countInput = document.getElementById('count');
+        const percentageInput = document.getElementById('percentage');
+
+        function toggleExtractionInputs() {
+            if (!extractionTypeSelect || !countGroup || !percentageGroup || !countInput || !percentageInput) {
+                console.warn('One or more elements for extraction type toggle not found.');
+                return;
+            }
+            if (extractionTypeSelect.value === 'count') {
+                countGroup.style.display = 'block';
+                countInput.required = true;
+                percentageGroup.style.display = 'none';
+                percentageInput.required = false;
+            } else {
+                countGroup.style.display = 'none';
+                countInput.required = false;
+                percentageGroup.style.display = 'block';
+                percentageInput.required = true;
+            }
+        }
+        extractionTypeSelect.addEventListener('change', toggleExtractionInputs);
+        toggleExtractionInputs(); // Initialize on load
+    } else {
+        console.warn('Element with ID "extraction_type" not found.');
+    }
+
+    // Logic for form submission
+    if (extractionForm && progressBarContainer && progressBar && progressText && resultArea && submitButton) {
+        console.log('Form "extractionForm" found, attaching submit event listener.');
+        extractionForm.addEventListener('submit', function(event) {
+            console.log('Submit event on "extractionForm" triggered. Preventing default.');
+            event.preventDefault();
+            console.log('Default behavior prevented for "extractionForm".');
+
+            clearPreviousResults();
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.style.backgroundColor = 'var(--primary-color)';
+            progressText.textContent = '0%';
+            submitButton.disabled = true;
+            submitButton.innerHTML = '正在处理... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            submitButton.style.opacity = '0.7';
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                console.log('Received response from fetch.');
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => { 
+                        console.error('Server response is not valid JSON. Text:', text.substring(0, 200));
+                        throw new Error('服务器返回的不是有效的JSON格式: ' + text.substring(0, 100)); 
+                    });
+                }
+            })
+            .then(data => {
+                console.log('Initial server response:', data);
+                if (data.task_id) { // Assuming backend returns task_id for polling
+                    taskId = data.task_id;
+                    startPolling();
+                } else if (data.status === 'completed' && data.files && data.files.length > 0) {
+                    // Handle immediate completion if backend doesn't support polling for this task
+                    showSuccess(data.files);
+                } else if (data.error) {
+                    showError(data.error);
+                } else {
+                    showError('服务器响应格式不正确或未返回任务ID。');
+                }
+            })
+            .catch(error => {
+                showError('提交请求失败: ' + error.message);
+                console.error('Fetch error:', error);
+            });
+        });
+    } else {
+        console.error('One or more essential elements (form, progress bar, result area, submit button) not found!');
+    }
+
+    function clearPreviousResults() {
+        resultArea.innerHTML = ''; // Clear previous results or messages
+        // Remove any globally added alert messages if necessary
+        const existingAlerts = document.querySelectorAll('.alert.alert-dismissible');
+        existingAlerts.forEach(alert => alert.remove());
+    }
+
+    function startPolling() {
+        if (pollingInterval) clearInterval(pollingInterval);
+        console.log('Starting polling for task_id:', taskId);
+
+        pollingInterval = setInterval(() => {
+            if (!taskId) {
+                clearInterval(pollingInterval);
+                return;
+            }
+            // IMPORTANT: Replace '/get_extraction_progress/' with the actual endpoint for function3 progress
+            fetch(`/get_extraction_progress/${taskId}`) 
+            .then(response => {
+                if (!response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.indexOf('application/json') !== -1) {
+                        return response.json().then(errData => {
+                            throw new Error(errData.message || `获取进度失败: ${response.status}`);
+                        });
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(`获取进度时服务器返回了非预期的内容 (状态码: ${response.status}): ${text.substring(0, 200)}...`);
+                        });
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Poll response:', data);
+                if (data.status === 'error') {
+                    clearInterval(pollingInterval);
+                    showError(data.message || '处理过程中发生错误。');
+                } else if (data.status === 'processing') {
+                    updateProgress(data.progress, data.message || `${data.progress}%`);
+                } else if (data.status === 'completed') {
+                    clearInterval(pollingInterval);
+                    updateProgress(100, '处理完成!');
+                    showSuccess(data.files);
+                }
+            })
+            .catch(error => {
+                clearInterval(pollingInterval);
+                showError('获取进度失败: ' + error.message);
+                console.error('Polling error:', error);
+            });
+        }, 2000); // Poll every 2 seconds
+    }
+
+    function updateProgress(percentage, text) {
+        progressBar.style.width = percentage + '%';
+        progressText.textContent = text;
+        if (percentage === 100) {
+            progressBar.style.backgroundColor = 'var(--success-color)'; 
+        }
+    }
+
+    function showSuccess(files) {
+        progressBarContainer.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.innerHTML = '开始抽取';
+        submitButton.style.opacity = '1';
+        resultArea.innerHTML = ''; // Clear previous content
+
+        const successAlert = document.createElement('div');
+        successAlert.className = 'alert alert-success mt-4 animate-fade-in';
+        successAlert.setAttribute('role', 'alert');
+        successAlert.innerHTML = `
+            <div class="d-flex align-items-center">
+                <div>
+                    <h4 class="alert-heading mb-2">处理成功！</h4>
+                    <p class="mb-0">您的文件已成功处理完毕，可以下载查看结果。</p>
+                </div>
+            </div>`;
+        resultArea.appendChild(successAlert);
+
+        if (files && files.length > 0) {
+            const pMessage = document.createElement('p');
+            pMessage.textContent = '请点击下方按钮下载。';
+            pMessage.className = 'text-light mt-3 mb-3 text-center';
+            resultArea.appendChild(pMessage);
+
+            const linksDiv = document.createElement('div');
+            linksDiv.className = 'text-center'; // Center the download buttons
+
+            files.forEach(file => {
+                console.log('Preparing download link for file:', file.name, 'URL:', file.url);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = file.url;
+                downloadLink.download = file.name;
+                downloadLink.textContent = `下载 ${file.name}`;
+                downloadLink.className = 'btn btn-success me-2 mb-2'; 
+                linksDiv.appendChild(downloadLink);
+            });
+            resultArea.appendChild(linksDiv);
+        } else {
+             pMessage.textContent = '处理完成，但未找到可下载的文件。';
+             resultArea.appendChild(pMessage);
+        }
+    }
+
+    function showError(message) {
+        progressBarContainer.style.display = 'none';
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = '开始抽取';
+            submitButton.style.opacity = '1';
+        }
+        resultArea.innerHTML = ''; // Clear previous content
+
+        const errorAlert = document.createElement('div');
+        errorAlert.className = 'alert alert-danger mt-4 animate-fade-in';
+        errorAlert.setAttribute('role', 'alert');
+        errorAlert.textContent = message;
+        resultArea.appendChild(errorAlert);
+        // For a more robust solution, consider a global alert system or specific placement
+        // alert('处理失败: ' + message); // Simple alert as fallback
+    }
+});
+
+    
+</script>
+
+      
+</body>
+</html>

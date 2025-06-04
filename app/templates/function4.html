@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>AI模型评估工具 - 成研院-技支-AI测评能力平台</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --secondary-color: #86868b;
+            --background-color: #fbfbfd;
+            --text-color: white; 
+            --border-color: rgba(255, 255, 255, 0.2); 
+            --success-color: #5cb85c;
+        }
+        
+        html {
+            min-height: 100vh; 
+        }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: white; 
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            background-image: url("{{ url_for('static', filename='images/1234.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: white; 
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: white; 
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.1); 
+            color: white; 
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7); 
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+        }
+
+        .form-select option {
+            background-color: #343a40; /* Dark background for options */
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0062c3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-light {
+            color: white;
+            border-color: white;
+        }
+
+        .btn-outline-light:hover {
+            color: #212529;
+            background-color: white;
+            border-color: white;
+        }
+        
+        .page-header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+        
+        .page-description {
+            font-size: 1.2rem;
+            color: white; 
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 500px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            background-color: rgba(255, 255, 255, 0.2); 
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 3px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; 
+            display: none; 
+        }
+
+        .progress-bar-custom {
+            width: 0%;
+            height: 20px;
+            background-color: var(--primary-color); 
+            border-radius: 6px;
+            transition: width 0.3s ease-in-out, background-color 0.3s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">成研院-技支-AI测评能力平台</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.index') }}">首页</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.function1') }}">生成式文本准确性指标测评工具</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.function3') }}">文本内容随机抽取工具</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('main.function4') }}">AI评AI工具</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+    <div class="container mt-5 pt-5">
+        <div class="page-header animate-fade-in">
+            <h1>AI评AI工具</h1>
+            <p class="page-description">上传您的Excel文件，配置模型参数并选择评估Prompt，我们将使用AI模型进行评估。</p>
+        </div>
+        
+        <div class="animate-fade-in" style="animation-delay: 0.1s;">
+            <form id="aiEvaluationForm" method="POST" action="{{ url_for('main.function4') }}" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="excelFile" class="form-label">1. 上传 Excel 文件</label>
+                    <input class="form-control" type="file" id="excelFile" name="excelFile" accept=".xls,.xlsx" required>
+                    <small class="form-text text-light">请确保Excel文件至少包含两列：第一列为问题(text1)，第二列为答案(text2)。</small>
+                </div>
+
+                <div class="mb-4">
+                    <h2>2. 配置模型参数</h2>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="model_key" class="form-label">API Key</label>
+                            <input type="text" class="form-control" id="model_key" name="model_key" placeholder="请输入API Key">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="model_url" class="form-label">API URL</label>
+                            <input type="text" class="form-control" id="model_url" name="model_url" placeholder="请输入API URL">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="model_name" class="form-label">模型名称</label>
+                            <select class="form-select" id="model_name" name="model_name" required>
+                                <option value="" disabled selected>正在加载模型...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-light me-2" id="testConnectionBtn">测试连通性</button>
+                            <span id="model_status" class="ms-2"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">你希望AI帮助你评测的维度是什么？（可多选）</label>
+                            <small class="form-text text-light d-block mb-2">注：以下测评维度的评测框架依据GB/T45288.2-2025 人工智能 大模型 第2部分：评测指标与方法</small>
+                            <div id="promptCheckboxesContainer" class="row">
+                                <!-- Checkboxes will be populated here by JavaScript -->
+                                <p class="text-light">正在加载Prompt...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">开始处理</button>
+            </form>
+
+            <div id="progressBarContainer" class="progress-container animate-fade-in" style="display: none;">
+                <div id="progressBar" class="progress-bar-custom"></div>
+                <span id="progressText" class="progress-text">0%</span>
+            </div>
+
+            <div id="resultArea" class="mt-4"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="container text-center mt-5" style="color: var(--secondary-color);">
+    <p>&copy; 2025 成研院-技支. 保留所有权利.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const aiEvaluationForm = document.getElementById('aiEvaluationForm');
+    const modelKeyInput = document.getElementById('model_key');
+    const modelUrlInput = document.getElementById('model_url');
+    const modelNameSelect = document.getElementById('model_name');
+    // const promptNameSelect = document.getElementById('prompt_name'); // Replaced by checkboxes
+    const promptCheckboxesContainer = document.getElementById('promptCheckboxesContainer');
+    const testConnectionBtn = document.getElementById('testConnectionBtn');
+    const modelStatusSpan = document.getElementById('model_status');
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultArea = document.getElementById('resultArea');
+    const submitButton = aiEvaluationForm ? aiEvaluationForm.querySelector('button[type="submit"]') : null;
+    let taskId = null;
+    let pollingInterval = null;
+
+    // Fetch models for dropdown
+    fetch('{{ url_for("main.get_llm_models") }}')
+        .then(response => response.json())
+        .then(data => {
+            modelNameSelect.innerHTML = '<option value="" disabled selected>请选择模型</option>'; 
+            data.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model; 
+                option.textContent = model;
+                modelNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching models:', error);
+            modelNameSelect.innerHTML = '<option value="" disabled selected>加载模型失败</option>';
+        });
+
+    // Fetch prompts for checkboxes
+    fetch('{{ url_for("main.get_prompts") }}')
+        .then(response => response.json())
+        .then(data => {
+            promptCheckboxesContainer.innerHTML = ''; // Clear loading message
+            if (data && data.length > 0) {
+                data.forEach(prompt => {
+                    const colDiv = document.createElement('div');
+                    colDiv.className = 'col-md-4'; // Adjust layout as needed, e.g., col-md-6 for two per row
+
+                    const formCheckDiv = document.createElement('div');
+                    formCheckDiv.className = 'form-check mb-2';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.className = 'form-check-input';
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'selected_prompts'; // Name for form submission (list)
+                    checkbox.value = prompt.name; // The value sent to backend
+                    const checkboxId = 'prompt-' + prompt.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, ''); // Create a unique ID
+                    checkbox.id = checkboxId;
+
+                    const label = document.createElement('label');
+                    label.className = 'form-check-label';
+                    label.htmlFor = checkboxId;
+                    label.textContent = prompt.name; // Display name
+
+                    formCheckDiv.appendChild(checkbox);
+                    formCheckDiv.appendChild(label);
+                    colDiv.appendChild(formCheckDiv);
+                    promptCheckboxesContainer.appendChild(colDiv);
+                });
+            } else {
+                promptCheckboxesContainer.innerHTML = '<p class="text-light">没有可用的Prompt模板。</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching prompts:', error);
+            promptCheckboxesContainer.innerHTML = '<p class="text-danger">加载Prompt失败。</p>';
+        });
+
+    // Test Connection
+    if (testConnectionBtn) {
+        testConnectionBtn.addEventListener('click', function() {
+            const apiKey = modelKeyInput.value;
+            const apiUrl = modelUrlInput.value;
+            const modelName = modelNameSelect.value;
+
+            if (!apiUrl || !modelName) {
+                modelStatusSpan.textContent = 'API URL 和模型名称不能为空。';
+                modelStatusSpan.className = 'ms-2 text-danger';
+                return;
+            }
+
+            modelStatusSpan.textContent = '正在测试...';
+            modelStatusSpan.className = 'ms-2 text-info';
+
+            fetch('{{ url_for("main.test_ai_model_connection") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    api_key: apiKey, 
+                    api_url: apiUrl,
+                    model_name: modelName
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    modelStatusSpan.textContent = data.message || '连接成功!';
+                    modelStatusSpan.className = 'ms-2 text-success';
+                } else {
+                    modelStatusSpan.textContent = data.message || '连接失败.';
+                    modelStatusSpan.className = 'ms-2 text-danger';
+                }
+            })
+            .catch(error => {
+                modelStatusSpan.textContent = '测试请求失败: ' + error;
+                modelStatusSpan.className = 'ms-2 text-danger';
+                console.error('Error testing connection:', error);
+            });
+        });
+    }
+
+    // Form Submission
+    if (aiEvaluationForm && submitButton) {
+        aiEvaluationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            clearPreviousResults();
+
+            progressBarContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.style.backgroundColor = 'var(--primary-color)';
+            progressText.textContent = '0%';
+            submitButton.disabled = true;
+            submitButton.innerHTML = '正在处理... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            submitButton.style.opacity = '0.7';
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => { 
+                        throw new Error('服务器返回的不是有效的JSON格式: ' + text.substring(0, 100)); 
+                    });
+                }
+            })
+            .then(data => {
+                if (data.task_id) {
+                    taskId = data.task_id;
+                    startPolling();
+                } else if (data.status === 'failed' || data.message) { // Check for explicit failure or message
+                    showError(data.message || '提交失败，未返回任务ID。');
+                } else {
+                    showError('服务器响应格式不正确或未返回任务ID。');
+                }
+            })
+            .catch(error => {
+                showError('提交请求失败: ' + error.message);
+            });
+        });
+    }
+
+    function clearPreviousResults() {
+        resultArea.innerHTML = '';
+        const existingAlerts = document.querySelectorAll('.alert.alert-dismissible');
+        existingAlerts.forEach(alert => alert.remove());
+    }
+
+    function startPolling() {
+        if (pollingInterval) clearInterval(pollingInterval);
+        pollingInterval = setInterval(() => {
+            if (!taskId) {
+                clearInterval(pollingInterval);
+                return;
+            }
+            fetch(`/get_evaluation_progress/${taskId}`)
+            .then(response => {
+                if (!response.ok) {
+                    // Try to parse error message from JSON response if available
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.indexOf('application/json') !== -1) {
+                        return response.json().then(errData => { 
+                            throw new Error(errData.message || `获取进度失败: ${response.status}`); 
+                        });
+                    } else {
+                        // Fallback to text if not JSON
+                        return response.text().then(text => {
+                            throw new Error(`获取进度时服务器返回了非预期的内容 (状态码: ${response.status}): ${text.substring(0,100)}`);
+                        });
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'failed' || data.status === 'error') { // Handle both 'failed' and 'error' as terminal
+                    clearInterval(pollingInterval);
+                    showError(data.message || '处理过程中发生错误。');
+                } else if (data.status === 'processing') {
+                    updateProgress(data.progress, data.message || `${data.progress}%`);
+                } else if (data.status === 'completed') {
+                    clearInterval(pollingInterval);
+                    updateProgress(100, '处理完成!');
+                    showSuccess(data); // Pass the whole data object
+                }
+            })
+            .catch(error => {
+                clearInterval(pollingInterval);
+                showError('获取进度失败: ' + error.message);
+            });
+        }, 2000);
+    }
+
+    function updateProgress(percentage, text) {
+        progressBar.style.width = percentage + '%';
+        progressText.textContent = text;
+        if (percentage === 100) {
+            progressBar.style.backgroundColor = 'var(--success-color)'; 
+        }
+    }
+
+    function resetUIState() {
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = '开始处理';
+            submitButton.style.opacity = '1';
+        }
+        progressBarContainer.style.display = 'none';
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+        progressBar.style.backgroundColor = 'var(--primary-color)'; // Reset progress bar color
+        resultArea.innerHTML = ''; // Clear previous results
+        // Re-enable file input if it was disabled
+        const fileInput = document.getElementById('excelFile');
+        if (fileInput) {
+            fileInput.disabled = false;
+            fileInput.value = ''; // Clear selected file
+        }
+        // Re-enable prompt selection if it was disabled
+        const promptCheckboxes = document.querySelectorAll('input[name="selected_prompts"]');
+        promptCheckboxes.forEach(checkbox => checkbox.disabled = false);
+        // Reset any other specific UI elements for function4 if needed
+    }
+
+    function showSuccess(data) { // Changed parameter from files to data
+        resetUIState();
+        resultArea.innerHTML = ''; // Clear previous results like error messages
+        let successHtml = '<div class="alert alert-success animate-fade-in">处理成功完成！</div>';
+
+        if (data.files && data.files.length > 0) {
+            successHtml += '<h5>生成的文件:</h5>';
+            successHtml += '<p class="text-light mt-3 mb-3 text-center">请点击下方按钮下载。</p>';
+            successHtml += '<div class="text-center">'; // Center the download buttons
+            data.files.forEach(file => {
+                successHtml += `<a href="${file.url}" class="btn btn-success me-2 mb-2" download="${file.name}">下载 ${file.name}</a>`;
+            });
+            successHtml += '</div>';
+        } else if (data.download_url && data.processed_filename) { // Fallback for single file scenario
+            successHtml += '<h5>生成的文件:</h5>';
+            successHtml += '<p class="text-light mt-3 mb-3 text-center">请点击下方按钮下载。</p>';
+            successHtml += '<div class="text-center">'; // Center the download buttons
+            successHtml += `<a href="${data.download_url}" class="btn btn-success me-2 mb-2" download="${data.processed_filename}">下载 ${data.processed_filename}</a>`;
+            successHtml += '</div>';
+        } else {
+            successHtml += '<p>处理完成，但没有找到可下载的文件信息。</p>';
+        }
+
+        // Display analysis results if available
+        if (data.analysis_results) {
+            successHtml += '<h5>评估指标平均分:</h5><div class="card text-white mb-3" style="background-color: rgba(0, 0, 0, 0.2); border-color: rgba(255, 255, 255, 0.2);"><div class="card-body">';
+            for (const [key, value] of Object.entries(data.analysis_results)) {
+                if (value.average !== null && value.average !== undefined) {
+                    successHtml += `<p class="card-text"><strong>${key}:</strong> ${value.average.toFixed(2)} (共 ${value.count} 条有效数据)</p>`;
+                } else {
+                    successHtml += `<p class="card-text"><strong>${key}:</strong> 无有效数据进行平均值计算</p>`;
+                }
+            }
+            successHtml += '</div></div>';
+        }
+        if (data.analysis_error){
+            successHtml += `<div class="alert alert-warning animate-fade-in">${data.analysis_error}</div>`;
+        }
+
+        resultArea.innerHTML = successHtml;
+    }
+
+    function showError(message) {
+        progressBarContainer.style.display = 'none';
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = '开始处理';
+            submitButton.style.opacity = '1';
+        }
+        resultArea.innerHTML = '';
+        const errorAlert = document.createElement('div');
+        errorAlert.className = 'alert alert-danger mt-4 animate-fade-in';
+        errorAlert.innerHTML = `<h4 class="alert-heading">处理失败</h4><p>${message || '发生未知错误，请检查日志或联系管理员。'}</p>`;
+        resultArea.appendChild(errorAlert);
+    }
+});
+</script>
+
+</body>
+</html>

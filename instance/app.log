@@ -1,0 +1,24 @@
+2025-06-04 11:18:01,843 - app - INFO - Accessed index page at 2025-06-04 11:18:01.843165 from 192.168.31.66
+2025-06-04 11:18:02,016 - app - INFO - Accessed index page at 2025-06-04 11:18:02.016638 from 192.168.31.66
+2025-06-04 11:18:02,189 - app - INFO - Accessed index page at 2025-06-04 11:18:02.189846 from 192.168.31.66
+2025-06-04 11:18:48,694 - app - INFO - Accessed index page at 2025-06-04 11:18:48.693986 from 192.168.31.66
+2025-06-04 11:18:49,039 - app - INFO - Accessed index page at 2025-06-04 11:18:49.039910 from 192.168.31.66
+2025-06-04 11:18:49,200 - app - INFO - Accessed index page at 2025-06-04 11:18:49.200811 from 192.168.31.66
+2025-06-04 11:18:49,373 - app - INFO - Accessed index page at 2025-06-04 11:18:49.373437 from 192.168.31.66
+2025-06-04 11:18:49,528 - app - INFO - Accessed index page at 2025-06-04 11:18:49.528010 from 192.168.31.66
+2025-06-04 11:20:18,185 - app - INFO - Accessed index page at 2025-06-04 11:20:18.185712 from 192.168.31.66
+2025-06-04 11:20:20,306 - app - INFO - Accessed index page at 2025-06-04 11:20:20.306871 from 192.168.31.66
+2025-06-04 11:20:27,186 - app - INFO - Accessed index page at 2025-06-04 11:20:27.186933 from 192.168.31.66
+2025-06-04 11:20:27,187 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
+[SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
+[parameters: (None, '2025-06-04 03:20:27.187069', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-04 11:20:32,405 - app - INFO - Accessed index page at 2025-06-04 11:20:32.405949 from 192.168.31.66
+2025-06-04 11:20:33,419 - app - INFO - Accessed function1 at 2025-06-04 11:20:33.419007 from 192.168.31.66 with method GET by user admin
+2025-06-04 11:20:33,422 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-04 11:20:33,422 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-04 11:20:33,423 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-04 11:20:34,372 - app - INFO - Accessed function3 at 2025-06-04 11:20:34.372677 from 192.168.31.66 with method GET by user admin
+2025-06-04 11:20:34,835 - app - INFO - Accessed function4 at 2025-06-04 11:20:34.835616 from 192.168.31.66 with method GET by user admin
+2025-06-04 11:20:35,477 - app - INFO - Accessed index page at 2025-06-04 11:20:35.477134 from 192.168.31.66
+2025-06-04 11:21:03,515 - app - INFO - Accessed index page at 2025-06-04 11:21:03.515161 from 192.168.31.66
