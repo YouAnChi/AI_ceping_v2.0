@@ -10,7 +10,8 @@ import threading
 from urllib.parse import urlparse, urlunparse # Added for URL parsing
 import json # Added for json operations
 from TQ.tools import extract_and_save_to_excel, extract_and_save_to_excel_folder, ai_prompt_query, load_prompts, analyze_excel
-from app.models import UserActivityLog, User, ButtonClickLog # Added for admin_user_activity and ButtonClickLog
+from app.models import User, UserActivityLog, ButtonClickLog
+from sqlalchemy import func # Added for admin_user_activity and ButtonClickLog
 from app import db # Added for admin_user_activity
 from functools import wraps # 导入 wraps 用于装饰器
 from datetime import datetime, timedelta, timezone # 确保导入 timezone
@@ -26,6 +27,29 @@ def log_button_click(user_id, button_name):
     except Exception as e:
         current_app.logger.error(f"Error logging button click for user {user_id}, button {button_name}: {e}")
         db.session.rollback()
+
+def get_button_click_stats():
+    """获取按钮点击统计数据"""
+    try:
+        stats = db.session.query(
+            ButtonClickLog.button_name,
+            func.count(ButtonClickLog.id).label('click_count')
+        ).group_by(ButtonClickLog.button_name).all()
+        
+        # 转换为字典格式
+        stats_dict = {}
+        for stat in stats:
+            stats_dict[stat.button_name] = stat.click_count
+            
+        # 确保三个功能按钮都有统计数据，即使是0
+        for button_name in ['function1_submit', 'function3_submit', 'function4_submit']:
+            if button_name not in stats_dict:
+                stats_dict[button_name] = 0
+                
+        return stats_dict
+    except Exception as e:
+        current_app.logger.error(f'Error getting button click stats: {e}')
+        return {'function1_submit': 0, 'function3_submit': 0, 'function4_submit': 0}
 
 # A simple in-memory store for task statuses (NOT SUITABLE FOR PRODUCTION)
 # Structure: tasks_status[task_id] = {'status': 'processing' | 'completed' | 'failed', 'progress': 0-100, 'message': '...', 'processed_filename': '...'}
@@ -297,7 +321,7 @@ def function1():
     if request.method == 'POST':
         # 记录按钮点击事件
         user_id = current_user.id if current_user.is_authenticated else None
-        log_button_click(user_id, 'function4_submit')
+        log_button_click(user_id, 'function1_submit')
         task_id = str(uuid.uuid4())
         tasks_status[task_id] = {'status': 'submitted', 'progress': 0, 'task_id': task_id}
 
@@ -383,7 +407,8 @@ def function1():
                 return jsonify(tasks_status[task_id]), 500
 
     # GET request handling (renders the initial page)
-    return render_template('function1.html', embedding_models=embedding_models_list)
+    button_stats = get_button_click_stats()
+    return render_template('function1.html', embedding_models=embedding_models_list, button_stats=button_stats)
 
 
 
@@ -395,6 +420,10 @@ def function3():
     log_user_activity(current_user.id, 'access_function3', f'Accessed function3. Method: {request.method}')
     
     if request.method == 'POST':
+        # 记录按钮点击事件
+        user_id = current_user.id if current_user.is_authenticated else None
+        log_button_click(user_id, 'function3_submit')
+        
         try:
             files = request.files.getlist('fileUpload[]') # For multiple files / folder upload
             split_by = request.form.get('split_by', '\n')
@@ -513,7 +542,8 @@ def function3():
             current_app.logger.error(f'Error in function3 POST: {str(e)}')
             return jsonify({'status': 'failed', 'message': f'处理请求时发生内部错误: {str(e)}'}), 500
 
-    return render_template('function3.html')
+    button_stats = get_button_click_stats()
+    return render_template('function3.html', button_stats=button_stats)
 
 
 
@@ -701,7 +731,8 @@ def function4():
             return jsonify(tasks_status[task_id]), 500
 
     # GET request: Render the page. Prompts and models will be fetched by JS.
-    return render_template('function4.html')
+    button_stats = get_button_click_stats()
+    return render_template('function4.html', button_stats=button_stats)
 
 @main_bp.route('/get_llm_models', methods=['GET'])
 def get_llm_models():

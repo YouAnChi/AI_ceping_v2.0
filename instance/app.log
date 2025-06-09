@@ -1,21 +1,7 @@
-2025-06-06 14:57:08,315 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:08.315147 from 192.168.31.66
-2025-06-06 14:57:10,307 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:10.307665 from 192.168.31.66
-2025-06-06 14:57:12,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:12.306773 from 192.168.31.66
-2025-06-06 14:57:14,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:14.306899 from 192.168.31.66
-2025-06-06 14:57:16,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:16.309859 from 192.168.31.66
-2025-06-06 14:57:18,308 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:18.308873 from 192.168.31.66
-2025-06-06 14:57:20,316 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:20.316195 from 192.168.31.66
-2025-06-06 14:57:22,305 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:22.305822 from 192.168.31.66
-2025-06-06 14:57:24,304 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:24.304836 from 192.168.31.66
-2025-06-06 14:57:26,311 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:26.311743 from 192.168.31.66
-2025-06-06 14:57:28,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:28.309612 from 192.168.31.66
-2025-06-06 14:57:30,310 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:30.310131 from 192.168.31.66
-2025-06-06 14:57:32,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:32.309445 from 192.168.31.66
-2025-06-06 14:57:34,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:34.306413 from 192.168.31.66
-2025-06-06 14:57:36,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:36.309073 from 192.168.31.66
-2025-06-06 14:57:38,311 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:38.311313 from 192.168.31.66
-2025-06-06 14:57:40,318 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:40.318768 from 192.168.31.66
-2025-06-06 14:57:42,155 - app - INFO - Background processing complete for task 99c65abf-f291-4498-a76a-05769b3f32dd. Final file: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/eval_ready_20250606_145738_5258aeef.xlsx
-2025-06-06 14:57:42,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:42.306076 from 192.168.31.66
-2025-06-06 14:57:51,467 - app - INFO - Download request for eval_ready_20250606_145738_5258aeef.xlsx at 2025-06-06 14:57:51.467910 from 192.168.31.66
-2025-06-06 14:57:51,468 - app - INFO - Attempting to send file from directory: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files, filename: eval_ready_20250606_145738_5258aeef.xlsx
+2025-06-09 11:55:50,633 - app - INFO - Accessed function3 at 2025-06-09 11:55:50.633804 from 192.168.31.66 with method GET by user lpd123456
+2025-06-09 11:55:51,038 - app - INFO - Accessed function4 at 2025-06-09 11:55:51.038581 from 192.168.31.66 with method GET by user lpd123456
+2025-06-09 11:55:51,369 - app - INFO - Accessed function1 at 2025-06-09 11:55:51.369895 from 192.168.31.66 with method GET by user lpd123456
+2025-06-09 11:55:51,373 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-09 11:55:51,374 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-09 11:55:51,374 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-09 11:55:51,738 - app - INFO - Accessed index page at 2025-06-09 11:55:51.737964 from 192.168.31.66
