@@ -1,243 +1,187 @@
-# AI测评能力平台
+# AI 测试实用工具 v2.0
 
-## 1. 项目概览
+这是一个基于 Flask 的 Web 应用程序，旨在提供一系列与 AI 模型评估和数据处理相关的实用工具。系统包含用户管理、活动日志、文件处理以及多个核心功能模块，用于自动化处理和评估基于 AI 的任务。
 
-本项目是一个基于 Flask 框架开发的 AI 测评能力平台。旨在提供一个用户友好的界面，方便用户进行多种 AI 模型相关的测评任务，并记录用户操作，确保系统的可追溯性和安全性。
+## 项目架构
 
-## 2. 功能要点
+项目采用典型的 Flask Web 应用架构，主要组件包括：
 
-- **用户认证系统**：
-    - 用户注册：新用户可以通过提供用户名、邮箱（可选）、密码和邀请码进行注册。
-    - 用户登录：已注册用户可以使用用户名和密码登录系统。
-    - 登出功能。
-    - 密码重置功能（通过邮件）。
-    - 用户个人资料编辑。
-- **AI 测评功能**：
-    - **Function1 (Excel处理与评估)**: 用户上传 Excel 文件，选择特定列作为问题，输入提示词，选择外部和内部模型配置，以及评估指标，系统将处理文件并给出评估结果。
-    - **Function3 (AI提示词批量测试)**: 用户上传包含提示词的 Excel 文件，选择模型，系统将批量执行提示词并返回结果。
-    - **Function4 (AI评AI工具)**: 用户输入文本内容，选择模型进行评估。
-- **用户活动日志**：
-    - 记录用户在系统中的关键操作，如登录、访问页面、执行测评任务等。
-    - 管理员可以查看所有用户的活动日志，支持分页显示。
-- **后台管理**：
-    - （规划中）管理员可以管理用户、查看系统状态等。
+- **`run.py`**: 应用的启动入口，负责创建 Flask 应用实例并运行开发服务器。
+- **`config.py`**: 包含应用的配置信息，如密钥、数据库 URI、日志文件路径等。
+- **`app/`**: 核心应用代码目录。
+  - **`__init__.py`**: 应用工厂函数 `create_app()`，用于初始化 Flask 应用、数据库、登录管理器和蓝图等。
+  - **`models.py`**: 定义数据库模型（使用 Flask-SQLAlchemy），包括 `User`、`UserActivityLog` 和 `ButtonClickLog`。
+  - **`routes.py`**: 定义应用的路由和视图函数，处理用户请求和业务逻辑。包含一个主蓝图 `main`。
+  - **`auth/`**: 认证蓝图，包含用户注册、登录、登出等相关路由和表单 (`forms.py`)。
+  - **`static/`**: 存放静态文件，如 CSS、JavaScript 和图片。
+  - **`templates/`**: 存放 HTML 模板文件，用于渲染页面。
+    - **`admin/`**: 存放管理员后台相关的模板。
+    - **`auth/`**: 存放认证相关的模板。
+- **`instance/`**: 存放实例相关的文件，如 SQLite 数据库文件 (`app.db`) 和日志文件 (`app.log`)。
+- **`migrations/`**: 存放数据库迁移脚本（由 Flask-Migrate 生成）。
+- **`TQ/`**: 包含与特定任务（如 Prompt 工程、AI 查询）相关的工具和脚本 (`tools.py`, `PromptTemplate.json`)。
+- **`ZhiBiao/`**: 包含指标计算和评估相关的脚本 (`achieve.py`)。
+- **`requirements.txt`**: 列出项目所需的 Python 依赖包。
 
-## 3. 项目结构
+## 主要功能模块
 
-```
-AI_test_utils_v2.0/
-├── TQ/                             # 包含与提示词处理相关的工具和模板
-│   ├── PromptTemplate.json
-│   └── tools.py
-├── ZhiBiao/                        # 包含与指标计算相关的工具
-│   ├── achieve.py
-│   └── cilin.txt
-├── app/                            # Flask 应用核心目录
-│   ├── __init__.py                 # 应用工厂函数，初始化 Flask 应用及扩展
-│   ├── auth/                       # 认证蓝图
-│   │   ├── __init__.py
-│   │   ├── forms.py                # 认证相关的 WTForms 表单
-│   │   └── routes.py               # 认证相关的路由 (登录、注册、登出等)
-│   ├── models.py                   # SQLAlchemy 数据库模型定义
-│   ├── routes.py                   # 主应用蓝图的路由 (首页、功能页等)
-│   ├── static/                     # 静态文件 (CSS, JavaScript, Images)
-│   │   ├── css/
-│   │   ├── images/
-│   │   └── js/
-│   └── templates/                  # Jinja2 HTML 模板
-│       ├── admin/                  # 管理员相关页面模板
-│       │   └── user_activity.html
-│       ├── auth/                   # 认证相关页面模板 (login.html, register.html)
-│       ├── base.html               # 基础模板，其他模板继承此模板
-│       ├── function1.html          # 功能1页面模板
-│       ├── function3.html          # 功能3页面模板
-│       ├── function4.html          # 功能4页面模板
-│       └── index.html              # 首页模板
-├── config.py                       # 应用配置文件 (密钥、数据库URI、邮件服务器等)
-├── instance/                       # 实例文件夹，存放运行时生成的文件，如数据库文件、日志文件
-│   ├── app.db                      # SQLite 数据库文件
-│   ├── app.log                     # 应用日志文件
-│   ├── processed_files/            # Function1 处理后的文件存放目录
-│   └── uploads/                    # 用户上传的文件存放目录
-├── migrations/                     # Flask-Migrate 数据库迁移脚本
-│   ├── README
-│   ├── alembic.ini
-│   ├── env.py
-│   ├── script.py.mako
-│   └── versions/                   # 迁移版本文件
-├── models/                         # 存放本地AI模型文件的目录
-│   ├── BAAI/
-│   └── yangjhchs/
-├── requirements.txt                # 项目依赖的 Python 包列表
-└── run.py                          # 应用启动脚本
-```
+### 1. 用户认证与管理
 
-## 4. 项目架构
+- **用户注册与登录**: 用户可以注册账户并登录系统。注册时可能需要特定的注册码 (`REGISTRATION_KEY`)。
+- **管理员功能**:
+  - **创建管理员**: 管理员可以创建新的管理员账户。
+  - **用户管理**: 管理员可以查看所有用户列表，并删除用户账户。
+  - **权限控制**: 使用 `@login_required` 和自定义的 `@admin_required` 装饰器进行权限控制。
 
-- **前端**：
-    - HTML5
-    - CSS3 (Bootstrap 5)
-    - JavaScript (jQuery, AJAX for异步任务)
-- **后端**：
-    - Python 3.x
-    - Flask 微框架
-    - Flask-Login: 处理用户会话管理。
-    - Flask-SQLAlchemy: ORM，与数据库交互。
-    - Flask-Migrate: 管理数据库模式迁移。
-    - Flask-WTF: 处理 Web 表单。
-    - Flask-Bootstrap: 集成 Bootstrap 框架。
-    - Werkzeug: WSGI 工具库，提供路由、请求/响应处理等。
-- **数据库**：
-    - SQLite: 轻量级磁盘数据库，用于开发和中小型应用。
-- **核心组件职责**：
-    - `app/__init__.py`: 创建和配置 Flask 应用实例，注册蓝图和扩展。
-    - `app/models.py`: 定义数据库表结构（如 `User`, `UserActivityLog`）。
-    - `app/routes.py`: 包含主应用的核心路由逻辑，如首页、功能页面（Function1, Function3, Function4）以及用户活动日志查看页面。
-    - `app/auth/routes.py`: 处理用户认证相关的路由，如登录、注册、登出、密码重置等。
-    - `app/auth/forms.py` & `app/forms.py` (若有): 定义用于数据提交和验证的表单类。
-    - `config.py`: 存储应用的配置变量，如密钥、数据库连接字符串、邮件服务器设置等。
-    - `run.py`: 作为应用的入口点，用于启动开发服务器。
-    - `migrations/`: 存放 Alembic 生成的数据库迁移脚本，用于版本化管理数据库结构变更。
+### 2. 用户活动日志
 
-## 5. 项目流程图
+- 系统会记录用户的关键活动，如登录、登出、页面访问、文件上传、按钮点击等。
+- 活动日志存储在 `UserActivityLog` 表中，包含用户 ID、时间戳、操作类型、详细信息和 IP 地址。
+- 管理员可以查看用户活动日志，并进行分析（例如，通过图表展示活动频率）。
+- 按钮点击事件会额外记录在 `ButtonClickLog` 表中。
 
-### 5.1 用户认证流程
+### 3. 文件处理与核心 AI 功能 (Function1, Function3, Function4)
 
-```mermaid
-graph TD
-    A[用户开始] --> B{注册/登录?}
-    B -- 注册 --> C[填写注册信息 (用户名, 邮箱, 密码, 邀请码)]
-    C --> D{验证邀请码?}
-    D -- 邀请码有效 --> E[创建用户账户]
-    D -- 邀请码无效 --> F[注册失败, 提示错误]
-    E --> G[注册成功, 自动登录或跳转登录页]
-    B -- 登录 --> H[填写登录信息 (用户名, 密码)]
-    H --> I{验证用户名/密码?}
-    I -- 验证成功 --> J[登录成功, 跳转首页]
-    I -- 验证失败 --> K[登录失败, 提示错误]
-    J --> L[用户操作 (访问功能, 登出)]
-    L --> M[结束]
-```
+这些是系统的核心功能，主要围绕 Excel 文件的处理、AI 模型调用和评估展开。
 
-### 5.2 AI测评功能流程 (以Function1为例)
+- **文件上传**: 用户可以上传 Excel 文件到服务器 (`instance/uploads/` 目录下，通常会为每个任务创建一个唯一的子目录)。
+- **后台任务处理**: 文件上传后，系统会启动后台线程 (`process_task_background` 在 `app/routes.py` 中定义) 执行耗时的数据处理和 AI 评估任务。这避免了阻塞用户界面。
+  - **任务状态跟踪**: 后台任务的状态（如处理中、已完成、失败）会通过一个内存中的字典 `tasks_status` 进行跟踪，并通过 `/task_status/<task_id>` API 接口暴露给前端，实现异步任务状态更新。
+  - **核心处理逻辑**: 后台任务会调用 `ZhiBiao/achieve.py` 中的 `process_and_evaluate_excel` 函数以及 `TQ/tools.py` 中的相关函数。这些函数可能执行以下操作：
+    - 从上传的 Excel 文件中提取特定列数据 (`extract_column_to_new_excel`)。
+    - 使用预设的 Prompt 模板 (`TQ/PromptTemplate.json`) 与 AI 模型（可能是内部部署的模型或外部 API，如 OpenAI）进行交互 (`ai_prompt_query`)。
+    - 对 AI 模型的输出进行评估，可能涉及多种指标（如 ROUGE 分数、相似度计算等，使用了 `sentence-transformers`）。
+    - 将处理和评估结果保存到新的 Excel 文件中。
+- **结果下载**: 处理完成后，用户可以从 `instance/processed_files/` 目录下载生成的 Excel 文件。
 
-```mermaid
-graph TD
-    A[用户访问Function1页面] --> B[上传Excel文件]
-    B --> C[选择问题列]
-    C --> D[输入提示词]
-    D --> E[配置外部/内部模型]
-    E --> F[选择评估指标]
-    F --> G[点击“开始评估”]
-    G --> H[后端接收请求, 启动异步任务]
-    H --> I[处理Excel, 提取问题]
-    I --> J[调用AI模型生成回答]
-    J --> K[根据指标评估结果]
-    K --> L[生成评估报告Excel]
-    L --> M[任务完成, 用户可下载报告]
-    H -- 任务失败 --> N[提示错误信息]
-```
+### 4. 其他辅助功能
 
-## 6. 数据库设计与使用
+- **连接测试 (`/test_connection`)**: 用于测试系统与外部服务（如 AI 模型 API）的连通性。
+- **日志记录**: 应用使用 Flask 的日志系统 (`current_app.logger`) 将运行日志记录到 `instance/app.log` 文件中。
 
-本项目使用 SQLAlchemy 作为 ORM，将 Python 对象映射到 SQLite 数据库中的表。数据库文件为 `instance/app.db`。
+## 数据库设计
 
-### 6.1 User 模型
+系统使用 SQLite 数据库，通过 Flask-SQLAlchemy ORM 进行交互。主要数据模型定义在 `app/models.py` 中：
 
-`User` 模型定义了系统用户的基本信息，用于用户认证和管理。
+### 1. `User` 表
 
-- **表名**: `user`
-- **字段**:
-    - `id` (Integer, Primary Key): 用户唯一标识符。
-    - `username` (String, Unique, Not Null): 用户名，用于登录。
-    - `email` (String, Unique, Nullable): 用户邮箱，可选，用于密码重置等。
-    - `password_hash` (String, Not Null): 存储用户密码的哈希值，保障安全。
-    - `about_me` (String, Nullable): 用户个人简介。
-    - `last_seen` (DateTime, Nullable): 用户最后一次登录或活动时间。
-    - `is_admin` (Boolean, Default: False): 标记用户是否为管理员，用于权限控制。
+存储用户信息。
 
-### 6.2 UserActivityLog 模型
+| 字段名          | 类型        | 约束与说明                               |
+| --------------- | ----------- | ---------------------------------------- |
+| `id`            | Integer     | 主键                                     |
+| `username`      | String(64)  | 用户名，唯一，索引，非空                 |
+| `email`         | String(120) | 邮箱，唯一，索引，可为空                 |
+| `password_hash` | String(128) | 哈希后的密码，非空                       |
+| `registered_on` | DateTime    | 注册时间，非空，默认为 `datetime.utcnow` |
+| `last_login`    | DateTime    | 最后登录时间，可为空                     |
+| `is_admin`      | Boolean     | 是否为管理员，默认为 `False`             |
 
-`UserActivityLog` 模型用于记录用户的操作行为，方便审计和追踪。
+- **关系**: 与 `UserActivityLog` 存在一对多关系 (`activities`)。
+- **方法**:
+  - `set_password(password)`: 设置并哈希用户密码。
+  - `check_password(password)`: 校验用户密码。
 
-- **表名**: `user_activity_log`
-- **字段**:
-    - `id` (Integer, Primary Key): 活动日志唯一标识符。
-    - `user_id` (Integer, Foreign Key to `user.id`, Nullable): 关联的用户ID。如果操作是匿名用户执行的，则可能为 `NULL`。
-    - `timestamp` (DateTime, Not Null): 操作发生的时间戳。
-    - `action` (String, Not Null): 描述用户执行的操作，例如 'login', 'view_index', 'access_function1' 等。
-    - `details` (String, Nullable): 操作的详细信息，例如错误消息、上传文件名等。
-    - `ip_address` (String, Nullable): 执行操作的IP地址。
+### 2. `UserActivityLog` 表
 
-### 6.3 数据库操作
+记录用户活动日志。
 
-- **初始化**: 在应用启动时，通过 Flask-SQLAlchemy 和 Flask-Migrate 进行数据库初始化和迁移。
-- **增删改查**: 通过 SQLAlchemy ORM 提供的会话（`db.session`）进行数据的增、删、改、查操作。
-- **关系**: `UserActivityLog` 模型通过 `user_id` 字段与 `User` 模型建立外键关系，允许通过 `activity.user` 访问关联的用户对象。
+| 字段名       | 类型        | 约束与说明                                 |
+| ------------ | ----------- | ------------------------------------------ |
+| `id`         | Integer     | 主键                                       |
+| `user_id`    | Integer     | 外键，关联 `User.id`，非空                 |
+| `timestamp`  | DateTime    | 活动时间戳，非空，默认为 `datetime.utcnow` |
+| `action`     | String(128) | 操作类型 (如 'login', 'upload_file')，非空 |
+| `details`    | Text        | 操作详情，可为空                           |
+| `ip_address` | String(45)  | 用户 IP 地址，可为空                       |
 
-## 7. 安装与运行
+- **关系**: 与 `User` 存在多对一关系 (`user`)。
 
-### 7.1 环境准备
+### 3. `ButtonClickLog` 表
 
-确保您的系统已安装 Python 3.9+ 和 pip。
+记录用户按钮点击事件。
 
-### 7.2 克隆项目
+| 字段名        | 类型        | 约束与说明                                          |
+| ------------- | ----------- | --------------------------------------------------- |
+| `id`          | Integer     | 主键                                                |
+| `user_id`     | Integer     | 外键，关联 `User.id`，可为空 (允许记录匿名用户点击) |
+| `button_name` | String(128) | 被点击的按钮名称/标识符，非空                       |
+| `timestamp`   | DateTime    | 点击时间戳，非空，默认为 `datetime.utcnow`          |
 
-```bash
-git clone <项目仓库地址>
-cd AI_test_utils_v2.0
-```
+- **关系**: 与 `User` 存在多对一关系。
 
-### 7.3 创建并激活虚拟环境
+### 数据库初始化与迁移
 
-推荐使用虚拟环境来管理项目依赖。
+- 数据库使用 Flask-Migrate 进行版本控制和迁移。相关命令通常通过 Flask CLI 执行 (例如 `flask db init`, `flask db migrate`, `flask db upgrade`)。
+- 首次运行时，如果 `instance/app.db` 不存在，Flask-SQLAlchemy 会根据模型定义自动创建数据库文件和表结构。
 
-```bash
-python3 -m venv venv
-source venv/bin/activate  # macOS/Linux
-# 或者 venv\Scripts\activate  # Windows
-```
+## 如何运行
 
-### 7.4 安装依赖
+1. **克隆仓库** (如果适用)
 
-```bash
-pip install -r requirements.txt
-```
+2. **创建并激活虚拟环境** (推荐):
 
-### 7.5 数据库初始化与迁移
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # macOS/Linux
+   # venv\Scripts\activate    # Windows
+   ```
 
-首次运行或数据库模型有更新时，需要进行数据库迁移。
+3. **安装依赖**: 
 
-```bash
-flask db init
-flask db migrate -m "Initial migration" # 首次迁移，或根据模型变更修改信息
-flask db upgrade
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### 7.6 配置环境变量
+4. **配置环境变量** (可选，但建议用于生产环境):
 
-您可能需要在运行应用前设置一些环境变量，例如 `REGISTRATION_KEY` 和邮件服务器配置。
+   - `SECRET_KEY`: 用于会话签名的密钥。
+   - `DATABASE_URL`: 数据库连接字符串 (默认为 SQLite)。
+   - `REGISTRATION_KEY`: 用户注册时可能需要的密钥。
+     (可以将这些变量设置在 `.env` 文件中，并使用 `python-dotenv` 之类的库加载)
 
-- **REGISTRATION_KEY**: 用于用户注册的邀请码。
-- **MAIL_SERVER**, **MAIL_PORT**, **MAIL_USE_TLS**, **MAIL_USERNAME**, **MAIL_PASSWORD**: 用于密码重置邮件发送。
+5. **数据库初始化/迁移** (如果是首次运行或模型有更改):
 
-例如，在 Linux/macOS 上：
+   ```bash
+   flask db init  # 如果还没有 migrations 文件夹
+   flask db migrate -m "Initial migration or descriptive message"
+   flask db upgrade
+   ```
 
-```bash
-export FLASK_APP=run.py
-export FLASK_ENV=development # 开发环境
-export REGISTRATION_KEY="your-secret-registration-key"
-export MAIL_SERVER="smtp.example.com"
-export MAIL_PORT="587"
-export MAIL_USE_TLS="True"
-export MAIL_USERNAME="your-email@example.com"
-export MAIL_PASSWORD="your-email-password"
-```
+6. **创建第一个管理员用户** (如果需要，可以运行 `create_first_admin.py` 脚本，或通过应用内功能创建):
 
-### 7.7 运行应用
+   ```bash
+   python create_first_admin.py
+   ```
 
-```bash
-flask run
-```
+7. **运行应用**:
 
-应用通常会在 `http://127.0.0.1:5000/` 运行。您可以在浏览器中访问此地址来使用平台。
+   ```bash
+   python run.py
+   ```
+
+   应用默认会在 `http://0.0.0.0:5001` 启动。
+
+## 主要技术栈
+
+- **后端**: Python, Flask
+- **数据库**: SQLite (通过 Flask-SQLAlchemy)
+- **用户认证**: Flask-Login
+- **表单处理**: Flask-WTF
+- **数据库迁移**: Flask-Migrate
+- **数据处理**: Pandas, NumPy
+- **AI/NLP 相关**: OpenAI (API), sentence-transformers, rouge, jieba, modelscope
+- **前端**: HTML, CSS (可能使用 Bootstrap-Flask), JavaScript (用于异步任务状态更新等)
+
+## 潜在改进点
+
+- **后台任务管理**: 当前使用内存字典 `tasks_status` 跟踪任务状态，不适用于生产环境。可以考虑使用更健壮的方案，如 Celery + Redis/RabbitMQ。
+- **错误处理与日志**: 进一步完善全局错误处理和更详细的日志记录。
+- **安全性**: 对文件上传进行更严格的类型和大小校验；考虑 XSS、CSRF 等 Web 安全防护。
+- **配置管理**: 对于敏感配置（如 API 密钥），应严格通过环境变量或专门的密钥管理服务管理，避免硬编码。
+- **测试**: 增加单元测试和集成测试，确保代码质量和功能稳定性。
+- **前端体验**: 优化前端交互，例如提供更实时的任务进度反馈。
+
+---
+
+本文档旨在提供对 AI 测试实用工具 v2.0 项目的全面理解。如有疑问或建议，请联系开发团队。
