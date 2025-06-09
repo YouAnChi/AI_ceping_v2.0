@@ -730,7 +730,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                clearInterval(pollingInterval);
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null; // Ensure pollingInterval is nullified
+                }
+
+                // Clear the file input on error
+                const excelFileInput = document.getElementById('excelFile');
+                if (excelFileInput) {
+                    excelFileInput.value = '';
+                }
+
                 showError(error.message || '获取进度信息时发生网络错误，请刷新页面重试。');
                 console.error('Error polling progress:', error);
                 submitButton.disabled = false;
@@ -791,6 +801,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         submitButton.disabled = false;
         submitButton.style.opacity = '1';
+
+        // Clear the file input
+        const excelFileInput = document.getElementById('excelFile');
+        if (excelFileInput) {
+            excelFileInput.value = '';
+        }
     }
 
     // Initial check for server-rendered messages (e.g., from non-AJAX POST or redirect with flash)

@@ -1,10 +1,37 @@
 {% extends "base.html" %}
-
 {% block title %}{{ title }} - {{ super() }}{% endblock %}
 
 {% block page_content %}
 <div class="container mt-5">
     <h1 class="mb-4">{{ title }}</h1>
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">用户操作分布</div>
+                <div class="card-body">
+                    <canvas id="actionPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">每日活动量</div>
+                <div class="card-body">
+                    <canvas id="dailyActivityBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mt-4">
+            <div class="card">
+                <div class="card-header">按钮点击分布</div>
+                <div class="card-body">
+                    <canvas id="buttonClickPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -18,9 +45,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% for activity in activities %}
+                {% for activity in activities_for_table %}
                 <tr>
-                    <td>{{ activity.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    {# 将 UTC 时间转换为北京时间 (UTC+8) #}
+                    <td class="activity-timestamp" data-timestamp="{{ activity.timestamp }}"></td>
                     <td>{{ activity.user_id }}</td>
                     <td>{{ activity.user.username if activity.user else 'N/A' }}</td>
                     <td>{{ activity.action }}</td>
@@ -67,3 +95,201 @@
     {% endif %}
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let activitiesForChart = {{ activities_for_chart | tojson }};
+        let buttonClickData = {{ button_click_data | tojson }};
+
+        // Format timestamps in the table
+        document.querySelectorAll('.activity-timestamp').forEach(td => {
+            const timestamp = parseFloat(td.dataset.timestamp);
+            if (!isNaN(timestamp)) {
+                const date = new Date(timestamp * 1000); // Convert to milliseconds
+                // Format to Beijing time (UTC+8) using Intl.DateTimeFormat
+                const formatter = new Intl.DateTimeFormat('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false,
+                    timeZone: 'Asia/Shanghai'
+                });
+                // Intl.DateTimeFormat for 'zh-CN' with these options typically produces YYYY/MM/DD HH:MM:SS
+                let formattedDate = formatter.format(date);
+                td.innerText = formattedDate;
+            }
+        });
+
+        // Process data for charts
+        const actionCounts = {};
+        const dailyCounts = {};
+        const buttonClickCounts = {};
+
+        activitiesForChart.forEach(activity => {
+            // Action counts
+            actionCounts[activity.action] = (actionCounts[activity.action] || 0) + 1;
+
+            // Daily counts (assuming timestamp is already Beijing time from backend)
+            // Create a Date object from the Beijing time timestamp
+            const dateObj = new Date(activity.timestamp * 1000);
+            // Get date string in YYYY-MM-DD format for Beijing time, which is sortable
+            const dateString = dateObj.toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' });
+            dailyCounts[dateString] = (dailyCounts[dateString] || 0) + 1;
+        });
+
+        buttonClickData.forEach(click => {
+            buttonClickCounts[click.button_name] = (buttonClickCounts[click.button_name] || 0) + 1;
+            // 确保时间戳是数字，并转换为毫秒
+            const timestampMs = parseFloat(click.timestamp) * 1000;
+            if (!isNaN(timestampMs)) {
+                const date = new Date(timestampMs);
+                // 格式化为北京时间
+                const formattedDate = date.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' });
+                const formattedTime = date.toLocaleTimeString('zh-CN', { timeZone: 'Asia/Shanghai' });
+                // 如果需要将时间戳显示在图表上，可以在这里处理
+                // console.log(`Button: ${click.button_name}, Time: ${formattedDate} ${formattedTime}`);
+            }
+        });
+
+        // Sort daily counts by date
+        const sortedDailyCounts = Object.keys(dailyCounts).sort().reduce(
+            (obj, key) => {
+                obj[key] = dailyCounts[key];
+                return obj;
+            },
+            {}
+        );
+
+        // Pie Chart for User Actions
+        const actionCtx = document.getElementById('actionPieChart').getContext('2d');
+        new Chart(actionCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(actionCounts),
+                datasets: [{
+                    data: Object.values(actionCounts),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: 'white' } // Changed to white
+                    },
+                    title: {
+                        display: true,
+                        text: '用户操作分布',
+                        color: 'white' // Changed to white
+                    }
+                }
+            }
+        });
+
+        // Bar Chart for Daily Activity
+        const dailyCtx = document.getElementById('dailyActivityBarChart').getContext('2d');
+        new Chart(dailyCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(sortedDailyCounts),
+                datasets: [{
+                    label: '活动次数',
+                    data: Object.values(sortedDailyCounts),
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true, //确保图例显示
+                        labels: { color: 'white' }
+                    },
+                    title: {
+                        display: true,
+                        text: '每日活动量',
+                        color: 'white'
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        ticks: { color: 'white', beginAtZero: true },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart for Button Clicks
+        const buttonClickCtx = document.getElementById('buttonClickPieChart').getContext('2d');
+        new Chart(buttonClickCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(buttonClickCounts),
+                datasets: [{
+                    data: Object.values(buttonClickCounts),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: 'white' } // 确保按钮点击图表图例文字为白色
+                    },
+                    title: {
+                        display: true,
+                        text: '按钮点击分布',
+                        color: 'white' // 确保按钮点击图表标题文字为白色
+                    }
+                }
+            }
+        });
+    }); // 在DOM内容加载完成后执行图表初始化
+
+</script>
+{% endblock scripts %}

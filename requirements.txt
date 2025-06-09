@@ -14,3 +14,4 @@ Flask-Migrate
 Flask-WTF
 email-validator
 bootstrap-flask
+pytz

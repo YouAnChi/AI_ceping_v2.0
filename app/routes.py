@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, current_app, send_from_directory, url_for, jsonify, flash, redirect
 from flask_login import login_required, current_user
 from app.auth.routes import log_user_activity # 导入日志记录函数
-from datetime import datetime
+from datetime import datetime, timedelta
 from ZhiBiao.achieve import extract_column_to_new_excel, process_and_evaluate_excel
 import os
 from werkzeug.utils import secure_filename
@@ -10,10 +10,22 @@ import threading
 from urllib.parse import urlparse, urlunparse # Added for URL parsing
 import json # Added for json operations
 from TQ.tools import extract_and_save_to_excel, extract_and_save_to_excel_folder, ai_prompt_query, load_prompts, analyze_excel
-from app.models import UserActivityLog, User # Added for admin_user_activity
+from app.models import UserActivityLog, User, ButtonClickLog # Added for admin_user_activity and ButtonClickLog
 from app import db # Added for admin_user_activity
+from functools import wraps # 导入 wraps 用于装饰器
+from datetime import datetime, timedelta, timezone # 确保导入 timezone
 
 main_bp = Blueprint('main', __name__)
+
+def log_button_click(user_id, button_name):
+    try:
+        click_log = ButtonClickLog(user_id=user_id, button_name=button_name)
+        db.session.add(click_log)
+        db.session.commit()
+        current_app.logger.info(f"Button click logged: User ID {user_id}, Button '{button_name}'")
+    except Exception as e:
+        current_app.logger.error(f"Error logging button click for user {user_id}, button {button_name}: {e}")
+        db.session.rollback()
 
 # A simple in-memory store for task statuses (NOT SUITABLE FOR PRODUCTION)
 # Structure: tasks_status[task_id] = {'status': 'processing' | 'completed' | 'failed', 'progress': 0-100, 'message': '...', 'processed_filename': '...'}
@@ -58,6 +70,85 @@ def process_task_background(app, task_id, processing_params):
             current_app.logger.error(f'Exception during background processing for task {task_id}: {str(e)}')
             tasks_status[task_id].update({'status': 'failed', 'progress': 100, 'message': f'处理过程中发生内部错误: {str(e)}'})
 
+# 管理员权限检查装饰器
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            current_app.logger.warning(f"User {current_user.username} (ID: {current_user.id}) attempted to access admin page without admin rights.")
+            flash('您没有权限访问此页面。', 'danger')
+            return redirect(url_for('main.index'))
+        current_app.logger.info(f"User {current_user.username} (ID: {current_user.id}) successfully accessed admin page.")
+        return f(*args, **kwargs)
+    return decorated_function
+
+@main_bp.route('/admin/create_admin', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def create_admin_user():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        email = request.form.get('email') # 可选
+
+        if not username or not password:
+            flash('用户名和密码不能为空。', 'danger')
+            return redirect(url_for('main.create_admin_user'))
+
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            flash('用户名已存在。', 'danger')
+            return redirect(url_for('main.create_admin_user'))
+        
+        if email:
+            existing_email = User.query.filter_by(email=email).first()
+            if existing_email:
+                flash('邮箱已被注册。', 'danger')
+                return redirect(url_for('main.create_admin_user'))
+
+        new_admin = User(username=username, email=email, is_admin=True)
+        new_admin.set_password(password)
+        db.session.add(new_admin)
+        db.session.commit()
+        log_user_activity(current_user.id, 'create_admin', f'Admin user {username} created.')
+        flash(f'管理员用户 {username} 创建成功!', 'success')
+        return redirect(url_for('main.admin_users'))
+
+    return render_template('admin/create_admin.html', title='创建管理员')
+
+@main_bp.route('/admin/users')
+@login_required
+@admin_required
+def admin_users():
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+    users_pagination = User.query.order_by(User.id.asc()).paginate(page=page, per_page=per_page, error_out=False)
+    users = users_pagination.items
+    current_app.logger.info(f"Admin users page accessed. Total users found: {len(users)}")
+    for user in users:
+        current_app.logger.debug(f"User: ID={user.id}, Username={user.username}, IsAdmin={user.is_admin}")
+    current_app.logger.info(f"Users data being passed to template (before render): {users}")
+    return render_template('admin/users.html', title='用户管理', users=users, pagination=users_pagination, timedelta=timedelta)
+
+@main_bp.route('/admin/delete_user/<int:user_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_user(user_id):
+    user_to_delete = User.query.get_or_404(user_id)
+    if user_to_delete.id == current_user.id:
+        flash('不能删除当前登录的管理员账户。', 'danger')
+        return redirect(url_for('main.admin_users'))
+    
+    # 删除用户相关的活动日志 (可选，根据需求决定是否保留)
+    UserActivityLog.query.filter_by(user_id=user_to_delete.id).delete()
+
+    db.session.delete(user_to_delete)
+    db.session.commit()
+    log_user_activity(current_user.id, 'delete_user', f'User {user_to_delete.username} (ID: {user_to_delete.id}) deleted.')
+    flash(f'用户 {user_to_delete.username} 已被删除。', 'success')
+    return redirect(url_for('main.admin_users'))
+
+
 @main_bp.route('/')
 def index():
     log_message = f"Accessed index page at {datetime.now()} from {request.remote_addr}"
@@ -70,18 +161,73 @@ def index():
     return render_template('index.html')
 
 @main_bp.route('/admin/user_activity')
-@login_required # 暂时只要求登录，后续可以增加管理员权限检查
+@login_required
+@admin_required # 应用管理员权限检查
 def admin_user_activity():
-    # 检查是否是管理员，如果不是，则重定向或显示错误 (后续添加)
-    # if not current_user.is_admin: # 假设 User 模型有 is_admin 属性
-    #     flash('您没有权限访问此页面。', 'danger')
-    #     return redirect(url_for('main.index'))
-
     page = request.args.get('page', 1, type=int)
     per_page = 20 # 每页显示的记录数
+
+    # 获取所有活动记录用于图表统计
+    all_activities_for_chart = UserActivityLog.query.order_by(UserActivityLog.timestamp.desc()).all()
+    activities_chart_data = []
+    beijing_tz = timezone(timedelta(hours=8)) # 定义北京时区
+    for activity in all_activities_for_chart:
+        # 将UTC时间转换为北京时间
+        # 确保原始时间戳是aware的UTC时间，然后转换为北京时间
+        beijing_time = activity.timestamp.replace(tzinfo=timezone.utc).astimezone(beijing_tz)
+        activities_chart_data.append({
+            'action': activity.action,
+            'timestamp': beijing_time.timestamp() # 使用北京时间的时间戳
+            # 其他图表可能需要的字段可以按需添加
+        })
+
+    # 分页获取活动记录用于表格显示
     activities_pagination = UserActivityLog.query.order_by(UserActivityLog.timestamp.desc()).paginate(page=page, per_page=per_page, error_out=False)
-    activities = activities_pagination.items
-    return render_template('admin/user_activity.html', title='用户活动日志', activities=activities, pagination=activities_pagination)
+    activities_table_data = []
+    for activity in activities_pagination.items:
+        # 将UTC时间转换为北京时间
+        # 确保原始时间戳是aware的UTC时间，然后转换为北京时间
+        beijing_time_table = activity.timestamp.replace(tzinfo=timezone.utc).astimezone(beijing_tz)
+        activities_table_data.append({
+            'id': activity.id,
+            'user_id': activity.user_id,
+            'user': activity.user, # 传递整个 user 对象，模板中可以访问 user.username
+            'action': activity.action,
+            'timestamp': beijing_time_table.timestamp(), # 使用北京时间的时间戳
+            'details': activity.details,
+            'ip_address': activity.ip_address
+        })
+
+    # Query button click data
+    button_clicks = ButtonClickLog.query.all()
+    button_click_data_processed = []
+    beijing_tz = timezone(timedelta(hours=8)) # 确保beijing_tz已定义或在此处定义
+    for click in button_clicks:
+        # 将UTC时间转换为北京时间
+        beijing_time_click = click.timestamp.replace(tzinfo=timezone.utc).astimezone(beijing_tz)
+        button_click_data_processed.append({
+            'button_name': click.button_name, 
+            'timestamp': beijing_time_click.timestamp() # 使用北京时间的时间戳
+        })
+
+
+    return render_template('admin/user_activity.html', 
+                           title='用户活动日志', 
+                           activities_for_table=activities_table_data, # 用于表格的数据
+                           activities_for_chart=activities_chart_data, # 用于图表的数据
+                           button_click_data=button_click_data_processed, # Add this line
+                           pagination=activities_pagination)
+
+@main_bp.route('/log_button_click', methods=['POST'])
+@login_required
+def log_button_click_route():
+    if request.is_json:
+        data = request.get_json()
+        button_name = data.get('button_name')
+        if button_name:
+            log_button_click(current_user.id, button_name)
+            return jsonify(success=True), 200
+    return jsonify(success=False, message='Invalid request data'), 400
 
 @main_bp.route('/subpage2')
 def subpage2():
@@ -149,6 +295,9 @@ def function1():
         current_app.logger.error(f"Error scanning models directory: {e}")
 
     if request.method == 'POST':
+        # 记录按钮点击事件
+        user_id = current_user.id if current_user.is_authenticated else None
+        log_button_click(user_id, 'function4_submit')
         task_id = str(uuid.uuid4())
         tasks_status[task_id] = {'status': 'submitted', 'progress': 0, 'task_id': task_id}
 
@@ -366,6 +515,12 @@ def function3():
 
     return render_template('function3.html')
 
+
+
+
+
+
+
 # Background task for AI model evaluation (function4)
 def process_evaluation_task_background(app, task_id, params):
     with app.app_context():
@@ -481,6 +636,9 @@ def function4():
     log_user_activity(current_user.id, 'access_function4', f'Accessed function4. Method: {request.method}')
 
     if request.method == 'POST':
+        # 记录按钮点击事件
+        user_id = current_user.id if current_user.is_authenticated else None
+        log_button_click(user_id, 'function4_submit')
         task_id = str(uuid.uuid4())
         tasks_status[task_id] = {'status': 'submitted', 'progress': 0, 'task_id': task_id}
 

@@ -54,6 +54,10 @@ def create_app(config_class=Config):
 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    # Add timedelta to Jinja2 context
+    from datetime import timedelta
+    app.jinja_env.globals.update(timedelta=timedelta)
     
     return app
 

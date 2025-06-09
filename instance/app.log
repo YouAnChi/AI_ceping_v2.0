@@ -1,24 +1,21 @@
-2025-06-04 11:18:01,843 - app - INFO - Accessed index page at 2025-06-04 11:18:01.843165 from 192.168.31.66
-2025-06-04 11:18:02,016 - app - INFO - Accessed index page at 2025-06-04 11:18:02.016638 from 192.168.31.66
-2025-06-04 11:18:02,189 - app - INFO - Accessed index page at 2025-06-04 11:18:02.189846 from 192.168.31.66
-2025-06-04 11:18:48,694 - app - INFO - Accessed index page at 2025-06-04 11:18:48.693986 from 192.168.31.66
-2025-06-04 11:18:49,039 - app - INFO - Accessed index page at 2025-06-04 11:18:49.039910 from 192.168.31.66
-2025-06-04 11:18:49,200 - app - INFO - Accessed index page at 2025-06-04 11:18:49.200811 from 192.168.31.66
-2025-06-04 11:18:49,373 - app - INFO - Accessed index page at 2025-06-04 11:18:49.373437 from 192.168.31.66
-2025-06-04 11:18:49,528 - app - INFO - Accessed index page at 2025-06-04 11:18:49.528010 from 192.168.31.66
-2025-06-04 11:20:18,185 - app - INFO - Accessed index page at 2025-06-04 11:20:18.185712 from 192.168.31.66
-2025-06-04 11:20:20,306 - app - INFO - Accessed index page at 2025-06-04 11:20:20.306871 from 192.168.31.66
-2025-06-04 11:20:27,186 - app - INFO - Accessed index page at 2025-06-04 11:20:27.186933 from 192.168.31.66
-2025-06-04 11:20:27,187 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
-[SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
-[parameters: (None, '2025-06-04 03:20:27.187069', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
-2025-06-04 11:20:32,405 - app - INFO - Accessed index page at 2025-06-04 11:20:32.405949 from 192.168.31.66
-2025-06-04 11:20:33,419 - app - INFO - Accessed function1 at 2025-06-04 11:20:33.419007 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:20:33,422 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:20:33,422 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:20:33,423 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:20:34,372 - app - INFO - Accessed function3 at 2025-06-04 11:20:34.372677 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:20:34,835 - app - INFO - Accessed function4 at 2025-06-04 11:20:34.835616 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:20:35,477 - app - INFO - Accessed index page at 2025-06-04 11:20:35.477134 from 192.168.31.66
-2025-06-04 11:21:03,515 - app - INFO - Accessed index page at 2025-06-04 11:21:03.515161 from 192.168.31.66
+2025-06-06 14:57:08,315 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:08.315147 from 192.168.31.66
+2025-06-06 14:57:10,307 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:10.307665 from 192.168.31.66
+2025-06-06 14:57:12,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:12.306773 from 192.168.31.66
+2025-06-06 14:57:14,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:14.306899 from 192.168.31.66
+2025-06-06 14:57:16,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:16.309859 from 192.168.31.66
+2025-06-06 14:57:18,308 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:18.308873 from 192.168.31.66
+2025-06-06 14:57:20,316 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:20.316195 from 192.168.31.66
+2025-06-06 14:57:22,305 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:22.305822 from 192.168.31.66
+2025-06-06 14:57:24,304 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:24.304836 from 192.168.31.66
+2025-06-06 14:57:26,311 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:26.311743 from 192.168.31.66
+2025-06-06 14:57:28,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:28.309612 from 192.168.31.66
+2025-06-06 14:57:30,310 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:30.310131 from 192.168.31.66
+2025-06-06 14:57:32,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:32.309445 from 192.168.31.66
+2025-06-06 14:57:34,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:34.306413 from 192.168.31.66
+2025-06-06 14:57:36,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:36.309073 from 192.168.31.66
+2025-06-06 14:57:38,311 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:38.311313 from 192.168.31.66
+2025-06-06 14:57:40,318 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:40.318768 from 192.168.31.66
+2025-06-06 14:57:42,155 - app - INFO - Background processing complete for task 99c65abf-f291-4498-a76a-05769b3f32dd. Final file: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/eval_ready_20250606_145738_5258aeef.xlsx
+2025-06-06 14:57:42,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:42.306076 from 192.168.31.66
+2025-06-06 14:57:51,467 - app - INFO - Download request for eval_ready_20250606_145738_5258aeef.xlsx at 2025-06-06 14:57:51.467910 from 192.168.31.66
+2025-06-06 14:57:51,468 - app - INFO - Attempting to send file from directory: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files, filename: eval_ready_20250606_145738_5258aeef.xlsx

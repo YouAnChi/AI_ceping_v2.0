@@ -1,90 +1,84 @@
-2025-06-04 11:04:55,803 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:04:56,297 - app - INFO - Accessed function3 at 2025-06-04 11:04:56.297807 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:04:56,733 - app - INFO - Accessed function4 at 2025-06-04 11:04:56.733498 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:04:57,383 - app - INFO - Accessed index page at 2025-06-04 11:04:57.383143 from 192.168.31.66
-2025-06-04 11:04:57,647 - app - INFO - Accessed index page at 2025-06-04 11:04:57.647917 from 192.168.31.66
-2025-06-04 11:04:58,664 - app - INFO - Accessed index page at 2025-06-04 11:04:58.664874 from 192.168.31.66
-2025-06-04 11:04:58,666 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
+2025-06-06 14:01:52,037 - app - INFO - Accessed function3 at 2025-06-06 14:01:52.037142 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:01:52,358 - app - INFO - Accessed function4 at 2025-06-06 14:01:52.358122 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:01:52,875 - app - INFO - Accessed index page at 2025-06-06 14:01:52.875056 from 192.168.31.66
+2025-06-06 14:02:34,318 - app - INFO - Accessed function1 at 2025-06-06 14:02:34.318610 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:02:34,321 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-06 14:02:34,322 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-06 14:02:34,322 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-06 14:02:36,647 - app - INFO - Accessed index page at 2025-06-06 14:02:36.647806 from 192.168.31.66
+2025-06-06 14:02:37,996 - app - INFO - Accessed index page at 2025-06-06 14:02:37.996367 from 192.168.31.66
+2025-06-06 14:02:37,998 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
 [SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
-[parameters: (None, '2025-06-04 03:04:58.665274', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
+[parameters: (None, '2025-06-06 06:02:37.996909', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
 (Background on this error at: https://sqlalche.me/e/20/gkpj)
-2025-06-04 11:05:01,467 - app - INFO - Accessed index page at 2025-06-04 11:05:01.467227 from 192.168.31.66
-2025-06-04 11:05:01,469 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
+2025-06-06 14:02:42,047 - app - INFO - Accessed index page at 2025-06-06 14:02:42.047242 from 192.168.31.66
+2025-06-06 14:02:44,375 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-06 14:02:48,161 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-06 14:02:48,163 - app - INFO - Admin users page accessed. Total users found: 4
+2025-06-06 14:02:48,163 - app - INFO - Users data being passed to template (before render): [<User admin>, <User lpd>, <User lpd123456>, <User yuanjiawei>]
+2025-06-06 14:02:53,316 - app - INFO - Accessed index page at 2025-06-06 14:02:53.316428 from 192.168.31.66
+2025-06-06 14:02:53,318 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
 [SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
-[parameters: (None, '2025-06-04 03:05:01.467837', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
+[parameters: (None, '2025-06-06 06:02:53.316781', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
 (Background on this error at: https://sqlalche.me/e/20/gkpj)
-2025-06-04 11:05:04,870 - app - INFO - Accessed index page at 2025-06-04 11:05:04.870781 from 192.168.31.66
-2025-06-04 11:06:07,511 - app - INFO - Accessed function4 at 2025-06-04 11:06:07.511825 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:08,366 - app - INFO - Accessed index page at 2025-06-04 11:06:08.366870 from 192.168.31.66
-2025-06-04 11:06:08,718 - app - INFO - Accessed index page at 2025-06-04 11:06:08.718447 from 192.168.31.66
-2025-06-04 11:06:09,087 - app - INFO - Accessed function1 at 2025-06-04 11:06:09.087003 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:09,090 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:06:09,090 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:06:09,090 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:06:09,602 - app - INFO - Accessed function1 at 2025-06-04 11:06:09.602326 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:09,604 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:06:09,605 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:06:09,605 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:06:09,797 - app - INFO - Accessed function3 at 2025-06-04 11:06:09.797375 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:10,370 - app - INFO - Accessed function3 at 2025-06-04 11:06:10.370849 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:10,819 - app - INFO - Accessed function1 at 2025-06-04 11:06:10.819107 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:10,822 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:06:10,822 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:06:10,822 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:06:11,423 - app - INFO - Accessed function4 at 2025-06-04 11:06:11.423414 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:11,914 - app - INFO - Accessed index page at 2025-06-04 11:06:11.914213 from 192.168.31.66
-2025-06-04 11:06:12,153 - app - INFO - Accessed index page at 2025-06-04 11:06:12.153249 from 192.168.31.66
-2025-06-04 11:06:12,671 - app - INFO - Accessed function1 at 2025-06-04 11:06:12.671428 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:12,674 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:06:12,674 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:06:12,675 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:06:12,987 - app - INFO - Accessed index page at 2025-06-04 11:06:12.986994 from 192.168.31.66
-2025-06-04 11:06:13,348 - app - INFO - Accessed index page at 2025-06-04 11:06:13.348867 from 192.168.31.66
-2025-06-04 11:06:13,821 - app - INFO - Accessed index page at 2025-06-04 11:06:13.821007 from 192.168.31.66
-2025-06-04 11:06:14,307 - app - INFO - Accessed function1 at 2025-06-04 11:06:14.307123 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:14,310 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:06:14,310 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:06:14,310 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:06:15,138 - app - INFO - Accessed index page at 2025-06-04 11:06:15.138290 from 192.168.31.66
-2025-06-04 11:06:15,565 - app - INFO - Accessed index page at 2025-06-04 11:06:15.565208 from 192.168.31.66
-2025-06-04 11:06:15,881 - app - INFO - Accessed function1 at 2025-06-04 11:06:15.881199 from 192.168.31.66 with method GET by user admin
-2025-06-04 11:06:15,887 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-04 11:06:15,889 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-04 11:06:15,890 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-04 11:06:16,251 - app - INFO - Accessed index page at 2025-06-04 11:06:16.251382 from 192.168.31.66
-2025-06-04 11:08:53,710 - app - INFO - Accessed index page at 2025-06-04 11:08:53.710147 from 192.168.31.66
-2025-06-04 11:08:56,517 - app - INFO - Accessed index page at 2025-06-04 11:08:56.517575 from 192.168.31.66
-2025-06-04 11:09:04,813 - app - INFO - Accessed index page at 2025-06-04 11:09:04.813760 from 192.168.31.66
-2025-06-04 11:13:59,880 - app - INFO - Accessed index page at 2025-06-04 11:13:59.880115 from 192.168.31.66
-2025-06-04 11:14:00,669 - app - INFO - Accessed index page at 2025-06-04 11:14:00.669517 from 192.168.31.66
-2025-06-04 11:14:00,816 - app - INFO - Accessed index page at 2025-06-04 11:14:00.816656 from 192.168.31.66
-2025-06-04 11:14:00,976 - app - INFO - Accessed index page at 2025-06-04 11:14:00.976732 from 192.168.31.66
-2025-06-04 11:14:01,142 - app - INFO - Accessed index page at 2025-06-04 11:14:01.142654 from 192.168.31.66
-2025-06-04 11:14:01,309 - app - INFO - Accessed index page at 2025-06-04 11:14:01.309750 from 192.168.31.66
-2025-06-04 11:14:01,983 - app - INFO - Accessed index page at 2025-06-04 11:14:01.983452 from 192.168.31.66
-2025-06-04 11:14:03,319 - app - INFO - Accessed index page at 2025-06-04 11:14:03.319406 from 192.168.31.66
-2025-06-04 11:14:28,114 - app - INFO - Accessed index page at 2025-06-04 11:14:28.114382 from 192.168.31.66
-2025-06-04 11:14:30,444 - app - INFO - Accessed index page at 2025-06-04 11:14:30.444370 from 192.168.31.66
-2025-06-04 11:14:30,772 - app - INFO - Accessed index page at 2025-06-04 11:14:30.772220 from 192.168.31.66
-2025-06-04 11:14:30,921 - app - INFO - Accessed index page at 2025-06-04 11:14:30.921588 from 192.168.31.66
-2025-06-04 11:14:31,079 - app - INFO - Accessed index page at 2025-06-04 11:14:31.079867 from 192.168.31.66
-2025-06-04 11:14:31,240 - app - INFO - Accessed index page at 2025-06-04 11:14:31.240614 from 192.168.31.66
-2025-06-04 11:14:31,403 - app - INFO - Accessed index page at 2025-06-04 11:14:31.402957 from 192.168.31.66
-2025-06-04 11:14:59,509 - app - INFO - Accessed index page at 2025-06-04 11:14:59.509314 from 192.168.31.66
-2025-06-04 11:14:59,676 - app - INFO - Accessed index page at 2025-06-04 11:14:59.676873 from 192.168.31.66
-2025-06-04 11:14:59,835 - app - INFO - Accessed index page at 2025-06-04 11:14:59.835835 from 192.168.31.66
-2025-06-04 11:14:59,990 - app - INFO - Accessed index page at 2025-06-04 11:14:59.990584 from 192.168.31.66
-2025-06-04 11:17:58,904 - app - INFO - Accessed index page at 2025-06-04 11:17:58.904150 from 192.168.31.66
-2025-06-04 11:17:58,907 - app - INFO - Accessed index page at 2025-06-04 11:17:58.907439 from 192.168.31.66
-2025-06-04 11:17:59,295 - app - INFO - Accessed index page at 2025-06-04 11:17:59.295871 from 192.168.31.66
-2025-06-04 11:17:59,464 - app - INFO - Accessed index page at 2025-06-04 11:17:59.464194 from 192.168.31.66
-2025-06-04 11:17:59,641 - app - INFO - Accessed index page at 2025-06-04 11:17:59.641418 from 192.168.31.66
-2025-06-04 11:18:00,151 - app - INFO - Accessed index page at 2025-06-04 11:18:00.151753 from 192.168.31.66
-2025-06-04 11:18:00,312 - app - INFO - Accessed index page at 2025-06-04 11:18:00.312108 from 192.168.31.66
-2025-06-04 11:18:00,487 - app - INFO - Accessed index page at 2025-06-04 11:18:00.487336 from 192.168.31.66
-2025-06-04 11:18:00,654 - app - INFO - Accessed index page at 2025-06-04 11:18:00.654410 from 192.168.31.66
-2025-06-04 11:18:00,825 - app - INFO - Accessed index page at 2025-06-04 11:18:00.825903 from 192.168.31.66
-2025-06-04 11:18:01,001 - app - INFO - Accessed index page at 2025-06-04 11:18:01.001769 from 192.168.31.66
-2025-06-04 11:18:01,177 - app - INFO - Accessed index page at 2025-06-04 11:18:01.177164 from 192.168.31.66
-2025-06-04 11:18:01,356 - app - INFO - Accessed index page at 2025-06-04 11:18:01.356666 from 192.168.31.66
-2025-06-04 11:18:01,675 - app - INFO - Accessed index page at 2025-06-04 11:18:01.675289 from 192.168.31.66
+2025-06-06 14:02:58,874 - app - INFO - Accessed index page at 2025-06-06 14:02:58.874596 from 192.168.31.66
+2025-06-06 14:02:58,877 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
+[SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
+[parameters: (None, '2025-06-06 06:02:58.875436', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-06 14:03:02,787 - app - INFO - Accessed index page at 2025-06-06 14:03:02.787398 from 192.168.31.66
+2025-06-06 14:03:04,562 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-06 14:03:06,564 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-06 14:03:06,567 - app - INFO - Admin users page accessed. Total users found: 4
+2025-06-06 14:03:06,568 - app - INFO - Users data being passed to template (before render): [<User admin>, <User lpd>, <User lpd123456>, <User yuanjiawei>]
+2025-06-06 14:03:24,632 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-06 14:03:59,405 - app - INFO - Accessed index page at 2025-06-06 14:03:59.405631 from 192.168.31.66
+2025-06-06 14:04:07,014 - app - INFO - Accessed function1 at 2025-06-06 14:04:07.014281 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:04:07,015 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-06 14:04:07,016 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-06 14:04:07,016 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-06 14:04:17,025 - app - INFO - Accessed index page at 2025-06-06 14:04:17.025026 from 192.168.31.66
+2025-06-06 14:04:18,494 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-06 14:29:38,280 - app - INFO - Accessed index page at 2025-06-06 14:29:38.280763 from 192.168.31.66
+2025-06-06 14:29:38,282 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
+[SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
+[parameters: (None, '2025-06-06 06:29:38.281171', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-06 14:46:28,025 - app - INFO - Accessed index page at 2025-06-06 14:46:28.024922 from 192.168.31.66
+2025-06-06 14:46:28,034 - app - ERROR - Error logging user activity: (sqlite3.IntegrityError) NOT NULL constraint failed: user_activity_log.user_id
+[SQL: INSERT INTO user_activity_log (user_id, timestamp, action, details, ip_address) VALUES (?, ?, ?, ?, ?)]
+[parameters: (None, '2025-06-06 06:46:28.027253', 'view_index_anonymous', 'Anonymous user accessed index page.', '192.168.31.66')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-06 14:46:32,219 - app - INFO - Accessed index page at 2025-06-06 14:46:32.219705 from 192.168.31.66
+2025-06-06 14:46:34,154 - app - INFO - Accessed function4 at 2025-06-06 14:46:34.154042 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:46:36,271 - app - INFO - Accessed function3 at 2025-06-06 14:46:36.271843 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:56:37,046 - app - INFO - Accessed function1 at 2025-06-06 14:56:37.046230 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:56:37,047 - app - INFO - Accessed function1 at 2025-06-06 14:56:37.046979 from 192.168.31.66 with method GET by user lpd123456
+2025-06-06 14:56:37,051 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-06 14:56:37,051 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-06 14:56:37,051 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-06 14:56:37,055 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-06 14:56:37,055 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-06 14:56:37,055 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-06 14:56:42,827 - app - INFO - AI Model Connection test to https://api.siliconflow.cn/v1/ (model: deepseek-ai/DeepSeek-V2.5) successful.
+2025-06-06 14:56:44,243 - app - INFO - AI Model Connection test to https://api.siliconflow.cn/v1/ (model: deepseek-ai/DeepSeek-V2.5) successful.
+2025-06-06 14:56:48,240 - app - INFO - Accessed function1 at 2025-06-06 14:56:48.240529 from 192.168.31.66 with method POST by user lpd123456
+2025-06-06 14:56:48,245 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-06 14:56:48,245 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-06 14:56:48,246 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-06 14:56:48,248 - app - INFO - Button click logged: User ID 3, Button 'function4_submit'
+2025-06-06 14:56:48,251 - app - INFO - File 1.xlsx uploaded to /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/uploads/99c65abf-f291-4498-a76a-05769b3f32dd_1.xlsx for task 99c65abf-f291-4498-a76a-05769b3f32dd
+2025-06-06 14:56:48,251 - app - INFO - Selected column: A for task 99c65abf-f291-4498-a76a-05769b3f32dd
+2025-06-06 14:56:48,298 - app - INFO - Questions extracted to /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/extracted_A_20250606_145648_fd266f5d.xlsx for task 99c65abf-f291-4498-a76a-05769b3f32dd
+2025-06-06 14:56:48,298 - app - INFO - Selected embedding model for ASS: yangjhchs/acge_text_embedding
+2025-06-06 14:56:48,299 - app - INFO - Background processing started for task 99c65abf-f291-4498-a76a-05769b3f32dd
+2025-06-06 14:56:48,299 - app - INFO - Task 99c65abf-f291-4498-a76a-05769b3f32dd submitted for background processing.
+2025-06-06 14:56:50,308 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:56:50.308237 from 192.168.31.66
+2025-06-06 14:56:52,305 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:56:52.305291 from 192.168.31.66
+2025-06-06 14:56:54,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:56:54.309193 from 192.168.31.66
+2025-06-06 14:56:56,306 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:56:56.306842 from 192.168.31.66
+2025-06-06 14:56:58,311 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:56:58.311572 from 192.168.31.66
+2025-06-06 14:57:00,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:00.309650 from 192.168.31.66
+2025-06-06 14:57:02,309 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:02.309613 from 192.168.31.66
+2025-06-06 14:57:04,308 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:04.308853 from 192.168.31.66
+2025-06-06 14:57:06,311 - app - INFO - Polling progress for task_id 99c65abf-f291-4498-a76a-05769b3f32dd at 2025-06-06 14:57:06.311010 from 192.168.31.66
