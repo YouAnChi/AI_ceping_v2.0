@@ -222,8 +222,9 @@ def admin_user_activity():
             'ip_address': activity.ip_address
         })
 
-    # Query button click data
-    button_clicks = ButtonClickLog.query.all()
+    # Query button click data - only for specific submit buttons
+    target_buttons = ['function1_submit', 'function3_submit', 'function4_submit']
+    button_clicks = ButtonClickLog.query.filter(ButtonClickLog.button_name.in_(target_buttons)).all()
     button_click_data_processed = []
     beijing_tz = timezone(timedelta(hours=8)) # 确保beijing_tz已定义或在此处定义
     for click in button_clicks:

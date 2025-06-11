@@ -178,7 +178,7 @@
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
             {% if current_user.is_authenticated %}
                 <li class="nav-item">
-                    <span class="navbar-text">你好, {{ current_user.username }}!</span>
+                    <a class="nav-link" href="#" style="padding-top: 8px; padding-bottom: 8px;">你好, {{ current_user.username }}!</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">退出登录</a>

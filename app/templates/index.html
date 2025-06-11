@@ -3,135 +3,68 @@
 {% block title %}首页 - {{ super() }}{% endblock %}
 
 {% block page_content %}
-
-  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 text-center mb-5">
+      <h1 class="display-4" style="color: white; margin-bottom: 2rem;">成研院-技支-AI测评能力平台</h1>
+      <p class="lead" style="color: rgba(255, 255, 255, 0.8);">为您提供专业的AI测评工具和服务</p>
     </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-
-        <div class="container">
-          <div class="carousel-caption text-start">
-            <h1 style="color: white;">Example headline.</h1>
-            <p style="color: white;">Some representative placeholder content for the first slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-
-        <div class="container">
-          <div class="carousel-caption">
-            <h1 style="color: white;">Another example headline.</h1>
-            <p style="color: white;">Some representative placeholder content for the second slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-
-        <div class="container">
-          <div class="carousel-caption text-end">
-            <h1 style="color: white;">One more for good measure.</h1>
-            <p style="color: white;">Some representative placeholder content for the third slide of this carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
-
-
-  <!-- Marketing messaging and featurettes
-  ================================================== -->
-  <!-- Wrap the rest of the page in another container to center all the content. -->
-
-  <div class="container marketing">
-
-    <!-- Three columns of text below the carousel -->
-    <div class="row">
-      <div class="col-lg-4">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-        <h2 style="color: white;">Heading</h2>
-        <p style="color: white;">Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
-        <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-        <h2 style="color: white;">Heading</h2>
-        <p style="color: white;">Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
-        <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-        <h2 style="color: white;">Heading</h2>
-        <p style="color: white;">And lastly this, the third column of representative placeholder content.</p>
-        <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-    </div><!-- /.row -->
-
-
-    <!-- START THE FEATURETTES -->
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading" style="color: white;">First featurette heading. <span class="text-muted" style="color: #f8f9fa;">It’ll blow your mind.</span></h2>
-        <p class="lead" style="color: white;">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
-      </div>
-      <div class="col-md-5">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+  
+  <div class="row justify-content-center">
+    <!-- 生成式文本准确性指标测评工具 -->
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="text-center">
+        <svg class="bd-placeholder-img rounded-circle mb-3" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="生成式文本准确性指标测评" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <rect width="100%" height="100%" fill="#0071e3"/>
+          <text x="50%" y="45%" fill="white" dy=".3em" font-size="16" font-weight="bold">文本</text>
+          <text x="50%" y="60%" fill="white" dy=".3em" font-size="16" font-weight="bold">测评</text>
+        </svg>
+        <h2 style="color: white; margin-bottom: 1rem;">生成式文本准确性指标测评</h2>
+        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem;">提供专业的文本生成质量评估工具，支持多维度指标分析，帮助您准确评估AI生成文本的质量和准确性。</p>
+        {% if current_user.is_authenticated %}
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('main.function1') }}">立即使用 &raquo;</a></p>
+        {% else %}
+        <p><a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}">登录后使用 &raquo;</a></p>
+        {% endif %}
       </div>
     </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-      <div class="col-md-7 order-md-2">
-        <h2 class="featurette-heading" style="color: white;">Oh yeah, it’s that good. <span class="text-muted" style="color: #f8f9fa;">See for yourself.</span></h2>
-        <p class="lead" style="color: white;">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
-      </div>
-      <div class="col-md-5 order-md-1">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
-      </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading" style="color: white;">And lastly, this one. <span class="text-muted" style="color: #f8f9fa;">Checkmate.</span></h2>
-        <p class="lead" style="color: white;">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
-      </div>
-      <div class="col-md-5">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+    
+    <!-- 文本内容随机抽取工具 -->
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="text-center">
+        <svg class="bd-placeholder-img rounded-circle mb-3" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="文本内容随机抽取" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <rect width="100%" height="100%" fill="#5cb85c"/>
+          <text x="50%" y="45%" fill="white" dy=".3em" font-size="16" font-weight="bold">随机</text>
+          <text x="50%" y="60%" fill="white" dy=".3em" font-size="16" font-weight="bold">抽取</text>
+        </svg>
+        <h2 style="color: white; margin-bottom: 1rem;">文本内容随机抽取工具</h2>
+        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem;">智能文本抽样工具，支持多种抽取策略和格式，帮助您快速从大量文本中获取具有代表性的样本数据。</p>
+        {% if current_user.is_authenticated %}
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('main.function3') }}">立即使用 &raquo;</a></p>
+        {% else %}
+        <p><a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}">登录后使用 &raquo;</a></p>
+        {% endif %}
       </div>
     </div>
-
-    <hr class="featurette-divider">
-
-    <!-- /END THE FEATURETTES -->
-
-  </div><!-- /.container -->
+    
+    <!-- AI评AI工具 -->
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="text-center">
+        <svg class="bd-placeholder-img rounded-circle mb-3" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI评AI工具" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <rect width="100%" height="100%" fill="#f0ad4e"/>
+          <text x="50%" y="45%" fill="white" dy=".3em" font-size="16" font-weight="bold">AI评</text>
+          <text x="50%" y="60%" fill="white" dy=".3em" font-size="16" font-weight="bold">AI</text>
+        </svg>
+        <h2 style="color: white; margin-bottom: 1rem;">AI评AI工具</h2>
+        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1.5rem;">利用AI技术自动评估AI模型性能，提供客观、高效的模型评价方案，支持多种评估维度和指标。</p>
+        {% if current_user.is_authenticated %}
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('main.function4') }}">立即使用 &raquo;</a></p>
+        {% else %}
+        <p><a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}">登录后使用 &raquo;</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

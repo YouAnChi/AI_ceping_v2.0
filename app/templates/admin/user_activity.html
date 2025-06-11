@@ -141,8 +141,17 @@
             dailyCounts[dateString] = (dailyCounts[dateString] || 0) + 1;
         });
 
+        // 按钮名称映射
+        const buttonNameMapping = {
+            'function1_submit': '生成式文本准确性指标测评工具',
+            'function3_submit': '文本内容随机抽取工具',
+            'function4_submit': 'AI评AI工具'
+        };
+
         buttonClickData.forEach(click => {
-            buttonClickCounts[click.button_name] = (buttonClickCounts[click.button_name] || 0) + 1;
+            // 使用映射后的名称作为键
+            const displayName = buttonNameMapping[click.button_name] || click.button_name;
+            buttonClickCounts[displayName] = (buttonClickCounts[displayName] || 0) + 1;
             // 确保时间戳是数字，并转换为毫秒
             const timestampMs = parseFloat(click.timestamp) * 1000;
             if (!isNaN(timestampMs)) {
@@ -151,7 +160,7 @@
                 const formattedDate = date.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai' });
                 const formattedTime = date.toLocaleTimeString('zh-CN', { timeZone: 'Asia/Shanghai' });
                 // 如果需要将时间戳显示在图表上，可以在这里处理
-                // console.log(`Button: ${click.button_name}, Time: ${formattedDate} ${formattedTime}`);
+                // console.log(`Button: ${displayName}, Time: ${formattedDate} ${formattedTime}`);
             }
         });
 

@@ -52,6 +52,10 @@ def extract_and_save_to_excel(file_path, split_by='\n', extraction_type='count',
     if content is None:
         return
 
+    # 验证分割符不能为空字符串
+    if not split_by:
+        split_by = '\n'  # 如果分割符为空，使用默认换行符
+    
     # 按照指定分割符分割内容
     items = content.split(split_by)
     items = [item.strip() for item in items if item.strip()]  # 去除空白项
@@ -149,8 +153,13 @@ def extract_and_save_to_excel_folder(folder_path, split_by='\n', extraction_type
             if content is None:
                 continue
 
+            # 验证分割符不能为空字符串
+            current_split_by = split_by
+            if not current_split_by:
+                current_split_by = '\n'  # 如果分割符为空，使用默认换行符
+            
             # 按照指定分割符分割内容
-            items = content.split(split_by)
+            items = content.split(current_split_by)
             items = [item.strip() for item in items if item.strip()]  # 去除空白项
 
             # 根据抽取方式随机抽取内容

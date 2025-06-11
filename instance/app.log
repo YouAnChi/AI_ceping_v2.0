@@ -1,7 +1,50 @@
-2025-06-09 11:55:50,633 - app - INFO - Accessed function3 at 2025-06-09 11:55:50.633804 from 192.168.31.66 with method GET by user lpd123456
-2025-06-09 11:55:51,038 - app - INFO - Accessed function4 at 2025-06-09 11:55:51.038581 from 192.168.31.66 with method GET by user lpd123456
-2025-06-09 11:55:51,369 - app - INFO - Accessed function1 at 2025-06-09 11:55:51.369895 from 192.168.31.66 with method GET by user lpd123456
-2025-06-09 11:55:51,373 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
-2025-06-09 11:55:51,374 - app - INFO - Found model: yangjhchs/acge_text_embedding
-2025-06-09 11:55:51,374 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
-2025-06-09 11:55:51,738 - app - INFO - Accessed index page at 2025-06-09 11:55:51.737964 from 192.168.31.66
+2025-06-11 09:13:21,633 - app - INFO - Accessed function1 at 2025-06-11 09:13:21.633143 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:13:21,638 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-11 09:13:21,639 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-11 09:13:21,639 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-11 09:13:24,060 - app - INFO - Accessed function3 at 2025-06-11 09:13:24.060678 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:13:26,202 - app - INFO - Accessed function4 at 2025-06-11 09:13:26.202544 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:13:39,332 - app - INFO - AI Model Connection test to https://api.siliconflow.cn/v1/ (model: deepseek-ai/DeepSeek-V2.5) successful.
+2025-06-11 09:13:48,554 - app - INFO - Accessed function4 at 2025-06-11 09:13:48.554837 from 192.168.31.66 with method POST by user lpd123456
+2025-06-11 09:13:48,562 - app - INFO - Button click logged: User ID 3, Button 'function4_submit'
+2025-06-11 09:13:48,566 - app - INFO - File 1.xlsx uploaded to /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx for AI evaluation task 73a8e15e-e727-4fb7-9e2d-882adc7175ab
+2025-06-11 09:13:48,566 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Selected prompts ['完整度', '有效性', '连贯性', '一致性', '遵循性', '真实性', '有害性', '流畅性', '格式规范性'].
+2025-06-11 09:13:48,567 - app - INFO - Background AI evaluation started for task 73a8e15e-e727-4fb7-9e2d-882adc7175ab
+2025-06-11 09:13:48,567 - app - INFO - AI evaluation task 73a8e15e-e727-4fb7-9e2d-882adc7175ab submitted for background processing.
+2025-06-11 09:13:48,568 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '完整度'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:50,040 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '完整度' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:50,040 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '有效性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:51,480 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '有效性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:51,480 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '连贯性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:53,016 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '连贯性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:53,017 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '一致性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:54,223 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '一致性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:54,224 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '遵循性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:55,488 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '遵循性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:55,488 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '真实性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:56,928 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '真实性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:56,929 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '有害性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:58,497 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '有害性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:58,497 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '流畅性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:59,976 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '流畅性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:13:59,976 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Processing with prompt '格式规范性'. Input: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:14:01,260 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Prompt '格式规范性' processed. Output now at: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:14:01,267 - app - INFO - Task 73a8e15e-e727-4fb7-9e2d-882adc7175ab: Excel analysis complete for /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx. Results: {'完整度': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '有效性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '连贯性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '一致性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '遵循性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '真实性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '有害性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '流畅性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}, '格式规范性': {'count': 3, 'sum': 3.0, 'average': 1.0, 'scores': [1.0, 1.0, 1.0]}}
+2025-06-11 09:14:01,267 - app - INFO - Background AI evaluation complete for task 73a8e15e-e727-4fb7-9e2d-882adc7175ab. Output file: /Users/lpd/Documents/project/ceping/AI_test_utils_v2.0/instance/processed_files/1_20250611091348_73a8e15e-e727-4fb7-9e2d-882adc7175ab.xlsx
+2025-06-11 09:18:58,116 - app - INFO - Accessed function1 at 2025-06-11 09:18:58.116127 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:18:58,121 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-11 09:18:58,121 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-11 09:18:58,121 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-11 09:19:00,062 - app - INFO - Accessed function3 at 2025-06-11 09:19:00.062360 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:19:00,456 - app - INFO - Accessed function4 at 2025-06-11 09:19:00.456106 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:19:01,341 - app - INFO - User lpd123456 (ID: 3) successfully accessed admin page.
+2025-06-11 09:19:01,954 - app - INFO - Accessed function3 at 2025-06-11 09:19:01.954129 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:19:02,220 - app - INFO - Accessed function1 at 2025-06-11 09:19:02.220679 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:19:02,223 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-11 09:19:02,224 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-11 09:19:02,224 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
+2025-06-11 09:19:02,980 - app - INFO - Accessed index page at 2025-06-11 09:19:02.980515 from 192.168.31.66
+2025-06-11 09:19:07,507 - app - INFO - Accessed function1 at 2025-06-11 09:19:07.507681 from 192.168.31.66 with method GET by user lpd123456
+2025-06-11 09:19:07,508 - app - INFO - Found model: BAAI/bge-small-zh-v1.5
+2025-06-11 09:19:07,508 - app - INFO - Found model: yangjhchs/acge_text_embedding
+2025-06-11 09:19:07,508 - app - INFO - Final embedding models found: ['BAAI/bge-small-zh-v1.5', 'yangjhchs/acge_text_embedding']
